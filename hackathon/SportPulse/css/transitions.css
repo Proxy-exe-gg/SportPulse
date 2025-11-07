@@ -1,0 +1,276 @@
+/* Page Transitions */
+.page-transition {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.page-exit {
+    animation: fadeOut 0.3s ease-out;
+}
+
+/* Mood Entry Animations */
+.mood-entry {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.4s ease-out forwards;
+}
+
+.mood-entry-exit {
+    animation: slideDown 0.3s ease-out forwards;
+}
+
+/* Social Interaction Animations */
+.reaction-animation {
+    animation: pop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.comment-animation {
+    animation: slideIn 0.4s ease-out;
+}
+
+/* Achievement Unlock Animation */
+.achievement-unlock {
+    animation: achievementPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Loading States */
+.loading-pulse {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes achievementPop {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    70% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}
+
+/* Utility Classes */
+.animate-hover {
+    transition: transform 0.2s ease-out;
+}
+
+.animate-hover:hover {
+    transform: translateY(-2px);
+}
+
+.animate-scale {
+    transition: transform 0.2s ease-out;
+}
+
+.animate-scale:hover {
+    transform: scale(1.05);
+}
+
+.animate-bounce {
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Modal Animations */
+.modal-overlay {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+}
+
+.modal-content {
+    transform: scale(0.95);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.modal-content.active {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Notification Toast Animations */
+.notification-enter {
+    animation: notificationSlideIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.notification-exit {
+    animation: notificationSlideOut 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes notificationSlideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes notificationSlideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Progress Bar Animations */
+.progress-bar {
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    animation: progressShimmer 1.5s infinite;
+}
+
+@keyframes progressShimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Theme Transition */
+body {
+    transition: background-color 0.3s ease-out, color 0.3s ease-out;
+}
+
+/* Focus Ring Animation */
+.focus-ring {
+    position: relative;
+}
+
+.focus-ring::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: inherit;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease-out;
+}
+
+.focus-ring:focus::after {
+    border-color: var(--accent);
+    animation: focusRing 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes focusRing {
+    0% {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

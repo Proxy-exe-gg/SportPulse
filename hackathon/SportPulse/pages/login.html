@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In – SportPulse</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #181A3D 0%, #23235b 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+        .auth-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            border-radius: 2rem;
+            overflow: hidden;
+            box-shadow: 0 8px 40px 0 rgba(44, 62, 80, 0.18);
+            background: rgba(30, 34, 70, 0.85);
+            display: flex;
+            backdrop-filter: blur(18px);
+        }
+        .auth-visual {
+            background: url('../assets/signup-visual.jpg') center/cover no-repeat;
+            min-width: 340px;
+            min-height: 520px;
+            flex: 1 1 340px;
+            border-top-left-radius: 2rem;
+            border-bottom-left-radius: 2rem;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+        }
+        .auth-visual::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 2rem 0 0 2rem;
+            background: linear-gradient(135deg, #23235b88 0%, #4C6FFF44 100%);
+        }
+        .slider {
+            position: absolute;
+            bottom: 2rem;
+            left: 0;
+            width: 100%;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        .slider-item {
+            width: 60px;
+            height: 60px;
+            border-radius: 1rem;
+            background: rgba(255,255,255,0.10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            border: 2px solid transparent;
+        }
+        .slider-item.active, .slider-item:hover {
+            background: rgba(76,111,255,0.25);
+            border-color: #8A5CFF;
+        }
+        .slider-item img {
+            width: 36px;
+            height: 36px;
+        }
+        .auth-form {
+            flex: 1 1 400px;
+            padding: 3rem 2.5rem;
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .input, .input:focus {
+            background: rgba(255,255,255,0.07);
+            border: 1.5px solid rgba(255,255,255,0.13);
+            color: #fff;
+            border-radius: 0.75rem;
+            padding: 0.9rem 1.1rem;
+            font-size: 1rem;
+            outline: none;
+            margin-bottom: 1.2rem;
+        }
+        .input::placeholder {
+            color: #a0a3c4;
+        }
+        .signup-btn {
+            background: linear-gradient(90deg, #4C6FFF 0%, #8A5CFF 100%);
+            color: #fff;
+            border: none;
+            border-radius: 0.75rem;
+            padding: 1rem 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1.2rem;
+            margin-bottom: 1.2rem;
+            transition: background 0.2s;
+        }
+        .signup-btn:hover {
+            opacity: 0.93;
+        }
+        .social-btns {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+        .social-btn {
+            flex: 1;
+            background: #23235b;
+            color: #fff;
+            border: 1.5px solid #4C6FFF;
+            border-radius: 0.75rem;
+            padding: 0.7rem 0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            transition: background 0.2s;
+        }
+        .social-btn img {
+            width: 20px;
+            height: 20px;
+        }
+        .social-btn:hover {
+            background: #4C6FFF;
+            color: #fff;
+        }
+        .auth-link {
+            color: #a0a3c4;
+            font-size: 0.98rem;
+        }
+        .auth-link a {
+            color: #8A5CFF;
+            text-decoration: underline;
+            margin-left: 0.3rem;
+        }
+        @media (max-width: 900px) {
+            .auth-container { flex-direction: column; }
+            .auth-visual { border-radius: 2rem 2rem 0 0; min-width: 100%; min-height: 220px; }
+            .auth-form { padding: 2rem 1.2rem; }
+        }
+    </style>
+</head>
+<body class="no-select" style="user-select: none;" onselectstart="return false;" onmousedown="if(event.detail>1){event.preventDefault();}">
+    <div class="auth-container">
+        <div class="auth-visual">
+            <div class="slider">
+                <div class="slider-item" title="Task Tracker">
+                    <img src="../assets/task-icon.png" alt="Task Tracker">
+                </div>
+                <div class="slider-item active" title="Sleep Tracker">
+                    <img src="../assets/sleep-icon.png" alt="Sleep Tracker">
+                </div>
+                <div class="slider-item" title="Mood Journal">
+                    <img src="../assets/mood-icon.png" alt="Mood Journal">
+                </div>
+            </div>
+        </div>
+        <form class="auth-form" autocomplete="off">
+            <h2 class="text-2xl font-bold mb-2">Log in to SportPulse</h2>
+            <div class="auth-link mb-6">
+                New to SportPulse?
+                <a href="signup.html">Sign up</a>
+            </div>
+            <input class="input" type="email" placeholder="Email" required>
+            <input class="input" type="password" placeholder="Enter your password" required>
+            <button type="submit" class="signup-btn">Log In</button>
+            <div class="flex items-center my-4">
+                <hr class="flex-1 border-gray-600">
+                <span class="mx-3 text-gray-400 text-sm">Or log in with</span>
+                <hr class="flex-1 border-gray-600">
+            </div>
+            <div class="social-btns">
+                <button type="button" class="social-btn"><img src="../assets/google.svg" alt="Google">Google</button>
+                <button type="button" class="social-btn"><img src="../assets/apple.svg" alt="Apple">Apple</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.querySelectorAll('.slider-item').forEach((item, idx, arr) => {
+            item.addEventListener('click', () => {
+                arr.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+        // After successful login, set user info in localStorage as {name, email, avatar, bio}
+        // Example:
+        // localStorage.setItem("flosparc_user", JSON.stringify({name: "John", email: "john@example.com", avatar: "...", bio: "..."}));
+    </script>
+</body>
+</html>

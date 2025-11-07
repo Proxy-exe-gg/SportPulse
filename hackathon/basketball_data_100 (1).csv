@@ -1,0 +1,101 @@
+game_id,date,team,opponent,player,points,assists,rebounds,fg_pct,minutes,turnovers,steals,blocks,result
+BB3000,2025-12-09,Boston Celtics,Phoenix Suns,Giannis Antetokounmpo,10,2,8,42.0,36,1,0,1,Phoenix Suns
+BB3001,2023-03-11,Brooklyn Nets,Miami Heat,Kevin Durant,30,12,2,44.4,20,5,5,3,Brooklyn Nets
+BB3002,2023-06-02,Denver Nuggets,Los Angeles Lakers,Jayson Tatum,19,0,12,43.3,44,3,2,3,Los Angeles Lakers
+BB3003,2023-04-10,Phoenix Suns,Denver Nuggets,Damian Lillard,8,4,10,54.1,17,3,2,1,Denver Nuggets
+BB3004,2023-01-14,Dallas Mavericks,Boston Celtics,Joel Embiid,36,12,7,43.0,22,6,3,2,Dallas Mavericks
+BB3005,2025-04-24,Miami Heat,Dallas Mavericks,Kyrie Irving,11,10,17,31.1,34,5,1,3,Dallas Mavericks
+BB3006,2023-10-09,Golden State Warriors,Denver Nuggets,Giannis Antetokounmpo,43,7,4,55.3,20,2,5,1,Denver Nuggets
+BB3007,2024-04-18,Phoenix Suns,Los Angeles Lakers,Joel Embiid,38,7,18,46.0,37,6,5,3,Phoenix Suns
+BB3008,2023-05-20,Dallas Mavericks,Phoenix Suns,Kyrie Irving,38,10,2,34.4,20,5,5,2,Dallas Mavericks
+BB3009,2023-11-06,Los Angeles Lakers,Dallas Mavericks,Giannis Antetokounmpo,48,5,13,34.2,11,2,1,4,Los Angeles Lakers
+BB3010,2023-01-19,Denver Nuggets,Boston Celtics,Giannis Antetokounmpo,29,12,18,57.6,14,2,0,3,Denver Nuggets
+BB3011,2024-03-23,Brooklyn Nets,Miami Heat,Stephen Curry,7,13,4,43.9,26,3,1,4,Miami Heat
+BB3012,2025-11-01,Dallas Mavericks,Miami Heat,Stephen Curry,28,11,14,42.8,24,0,5,0,Dallas Mavericks
+BB3013,2025-07-22,Dallas Mavericks,Phoenix Suns,Stephen Curry,43,12,5,67.2,20,4,1,4,Dallas Mavericks
+BB3014,2025-02-03,Dallas Mavericks,Brooklyn Nets,Giannis Antetokounmpo,29,3,12,55.2,16,5,5,3,Brooklyn Nets
+BB3015,2023-05-04,Los Angeles Lakers,Phoenix Suns,Damian Lillard,12,7,18,47.2,5,5,1,1,Phoenix Suns
+BB3016,2025-09-16,Golden State Warriors,Dallas Mavericks,Stephen Curry,51,13,17,37.5,25,1,3,0,Dallas Mavericks
+BB3017,2025-09-26,Denver Nuggets,Brooklyn Nets,Anthony Davis,38,6,19,45.7,12,2,2,3,Denver Nuggets
+BB3018,2023-02-02,Brooklyn Nets,Dallas Mavericks,Damian Lillard,5,10,4,42.5,20,2,0,1,Dallas Mavericks
+BB3019,2023-01-14,Boston Celtics,Dallas Mavericks,Giannis Antetokounmpo,26,9,4,53.0,32,1,3,4,Boston Celtics
+BB3020,2025-12-25,Boston Celtics,Brooklyn Nets,Kevin Durant,8,2,10,63.7,44,0,2,0,Brooklyn Nets
+BB3021,2025-04-22,Boston Celtics,Golden State Warriors,Giannis Antetokounmpo,35,8,20,49.8,48,3,3,3,Golden State Warriors
+BB3022,2023-01-25,Boston Celtics,Los Angeles Lakers,Damian Lillard,1,12,7,41.7,22,1,4,2,Boston Celtics
+BB3023,2023-02-04,Denver Nuggets,Brooklyn Nets,Joel Embiid,35,8,3,52.9,22,6,4,2,Denver Nuggets
+BB3024,2025-12-20,Denver Nuggets,Brooklyn Nets,Luka Doncic,27,1,20,60.1,24,6,0,3,Brooklyn Nets
+BB3025,2024-07-16,Dallas Mavericks,Denver Nuggets,Stephen Curry,28,13,3,61.0,20,1,5,4,Denver Nuggets
+BB3026,2024-08-10,Phoenix Suns,Golden State Warriors,Damian Lillard,8,12,6,62.5,8,4,2,4,Golden State Warriors
+BB3027,2023-02-05,Boston Celtics,Miami Heat,Kevin Durant,18,9,8,68.1,37,5,0,1,Miami Heat
+BB3028,2025-10-25,Los Angeles Lakers,Miami Heat,Jayson Tatum,44,13,4,40.0,25,6,1,3,Miami Heat
+BB3029,2025-05-31,Boston Celtics,Dallas Mavericks,Kevin Durant,40,6,12,48.1,45,6,0,3,Dallas Mavericks
+BB3030,2024-01-03,Dallas Mavericks,Miami Heat,Joel Embiid,20,9,0,64.8,10,5,3,2,Dallas Mavericks
+BB3031,2023-08-08,Phoenix Suns,Golden State Warriors,Giannis Antetokounmpo,52,3,15,40.7,23,2,4,4,Phoenix Suns
+BB3032,2023-07-17,Denver Nuggets,Phoenix Suns,Anthony Davis,43,12,1,31.8,45,6,3,0,Denver Nuggets
+BB3033,2025-12-09,Boston Celtics,Brooklyn Nets,Joel Embiid,0,6,6,69.8,13,5,2,1,Brooklyn Nets
+BB3034,2023-11-01,Golden State Warriors,Phoenix Suns,Anthony Davis,16,1,11,56.6,46,1,0,3,Phoenix Suns
+BB3035,2024-05-08,Miami Heat,Brooklyn Nets,Stephen Curry,45,1,0,38.5,9,1,4,1,Brooklyn Nets
+BB3036,2024-01-29,Los Angeles Lakers,Golden State Warriors,Anthony Davis,52,1,13,57.8,35,0,1,3,Los Angeles Lakers
+BB3037,2025-12-14,Golden State Warriors,Los Angeles Lakers,Anthony Davis,23,14,9,35.5,13,5,5,1,Golden State Warriors
+BB3038,2024-05-31,Los Angeles Lakers,Dallas Mavericks,Jayson Tatum,28,5,6,55.1,14,3,4,3,Los Angeles Lakers
+BB3039,2024-12-26,Golden State Warriors,Los Angeles Lakers,Jayson Tatum,48,1,18,59.2,27,3,2,1,Golden State Warriors
+BB3040,2024-07-01,Brooklyn Nets,Phoenix Suns,Stephen Curry,15,8,19,54.0,43,2,5,0,Phoenix Suns
+BB3041,2025-03-23,Miami Heat,Dallas Mavericks,Damian Lillard,32,3,12,41.8,8,6,1,3,Dallas Mavericks
+BB3042,2023-06-11,Golden State Warriors,Boston Celtics,Joel Embiid,40,9,2,51.1,5,2,2,1,Boston Celtics
+BB3043,2025-02-03,Phoenix Suns,Boston Celtics,Kyrie Irving,43,2,15,68.2,9,0,4,0,Phoenix Suns
+BB3044,2025-04-11,Brooklyn Nets,Golden State Warriors,LeBron James,3,12,12,50.3,45,5,4,3,Golden State Warriors
+BB3045,2025-07-29,Phoenix Suns,Los Angeles Lakers,Kyrie Irving,34,9,4,41.1,24,0,4,1,Phoenix Suns
+BB3046,2024-05-13,Dallas Mavericks,Miami Heat,Damian Lillard,40,12,20,57.2,9,2,5,3,Dallas Mavericks
+BB3047,2024-04-07,Los Angeles Lakers,Boston Celtics,Stephen Curry,27,1,14,54.5,8,2,5,1,Los Angeles Lakers
+BB3048,2024-09-06,Los Angeles Lakers,Phoenix Suns,Jayson Tatum,44,0,5,49.9,27,4,4,2,Los Angeles Lakers
+BB3049,2023-06-15,Dallas Mavericks,Golden State Warriors,Kevin Durant,46,14,3,60.9,6,2,3,2,Dallas Mavericks
+BB3050,2023-03-06,Brooklyn Nets,Phoenix Suns,Damian Lillard,40,1,15,48.2,28,0,3,4,Brooklyn Nets
+BB3051,2023-07-11,Dallas Mavericks,Golden State Warriors,Kevin Durant,49,1,18,57.0,12,1,5,4,Dallas Mavericks
+BB3052,2025-04-10,Los Angeles Lakers,Denver Nuggets,LeBron James,15,0,15,44.6,14,1,0,4,Denver Nuggets
+BB3053,2025-02-15,Miami Heat,Boston Celtics,Luka Doncic,26,14,10,40.9,9,4,2,0,Miami Heat
+BB3054,2025-02-11,Boston Celtics,Golden State Warriors,Kyrie Irving,2,6,2,65.1,23,6,2,2,Boston Celtics
+BB3055,2025-09-01,Denver Nuggets,Los Angeles Lakers,Anthony Davis,12,4,18,61.4,44,1,3,2,Los Angeles Lakers
+BB3056,2023-04-25,Miami Heat,Phoenix Suns,Kyrie Irving,48,12,7,36.0,31,0,1,4,Phoenix Suns
+BB3057,2023-01-20,Los Angeles Lakers,Miami Heat,LeBron James,48,10,12,64.0,24,0,1,4,Los Angeles Lakers
+BB3058,2023-12-17,Phoenix Suns,Miami Heat,LeBron James,9,11,8,33.7,19,6,4,3,Miami Heat
+BB3059,2023-06-19,Denver Nuggets,Dallas Mavericks,Stephen Curry,37,1,16,35.3,30,0,4,4,Denver Nuggets
+BB3060,2025-10-20,Phoenix Suns,Dallas Mavericks,Jayson Tatum,15,4,8,64.0,30,5,5,2,Dallas Mavericks
+BB3061,2025-06-07,Denver Nuggets,Boston Celtics,Luka Doncic,4,3,4,61.2,42,0,1,0,Denver Nuggets
+BB3062,2024-11-09,Denver Nuggets,Miami Heat,Anthony Davis,26,1,17,44.3,18,3,2,3,Miami Heat
+BB3063,2023-07-15,Golden State Warriors,Los Angeles Lakers,Jayson Tatum,51,10,9,63.1,43,0,1,2,Golden State Warriors
+BB3064,2025-12-17,Golden State Warriors,Phoenix Suns,Luka Doncic,22,6,16,32.0,24,2,1,0,Phoenix Suns
+BB3065,2023-03-29,Denver Nuggets,Brooklyn Nets,Kyrie Irving,15,1,14,34.1,13,0,0,0,Denver Nuggets
+BB3066,2024-04-15,Boston Celtics,Golden State Warriors,Giannis Antetokounmpo,23,10,20,67.5,10,4,4,2,Boston Celtics
+BB3067,2024-03-08,Los Angeles Lakers,Golden State Warriors,Luka Doncic,41,7,4,33.7,26,0,0,3,Los Angeles Lakers
+BB3068,2025-08-31,Boston Celtics,Dallas Mavericks,Giannis Antetokounmpo,52,11,12,49.8,29,5,3,1,Dallas Mavericks
+BB3069,2024-07-09,Miami Heat,Golden State Warriors,Kevin Durant,17,7,4,31.4,44,4,1,2,Golden State Warriors
+BB3070,2023-04-06,Phoenix Suns,Brooklyn Nets,Joel Embiid,3,1,8,45.3,31,1,5,4,Phoenix Suns
+BB3071,2023-06-02,Los Angeles Lakers,Brooklyn Nets,Anthony Davis,30,8,15,43.8,41,4,2,3,Brooklyn Nets
+BB3072,2024-07-28,Boston Celtics,Los Angeles Lakers,Anthony Davis,38,3,0,65.8,22,0,3,4,Los Angeles Lakers
+BB3073,2023-03-09,Miami Heat,Golden State Warriors,Stephen Curry,15,10,7,40.7,8,6,1,4,Golden State Warriors
+BB3074,2024-01-03,Dallas Mavericks,Denver Nuggets,Jayson Tatum,11,3,18,42.7,27,4,0,2,Dallas Mavericks
+BB3075,2024-10-06,Miami Heat,Denver Nuggets,Joel Embiid,34,4,5,49.6,10,0,1,4,Miami Heat
+BB3076,2023-02-02,Los Angeles Lakers,Dallas Mavericks,Joel Embiid,0,5,19,38.1,13,2,5,1,Dallas Mavericks
+BB3077,2024-02-29,Los Angeles Lakers,Golden State Warriors,Jayson Tatum,37,11,4,61.0,38,6,2,0,Golden State Warriors
+BB3078,2023-10-23,Phoenix Suns,Brooklyn Nets,Stephen Curry,21,4,10,35.5,15,5,3,3,Brooklyn Nets
+BB3079,2025-03-26,Boston Celtics,Phoenix Suns,Kyrie Irving,44,14,19,61.5,19,5,4,1,Phoenix Suns
+BB3080,2023-06-07,Brooklyn Nets,Phoenix Suns,Kevin Durant,8,2,0,68.0,41,3,4,0,Brooklyn Nets
+BB3081,2024-09-04,Dallas Mavericks,Denver Nuggets,Damian Lillard,14,10,18,34.2,36,1,2,0,Dallas Mavericks
+BB3082,2023-11-29,Dallas Mavericks,Boston Celtics,Jayson Tatum,40,14,2,62.9,47,5,5,2,Boston Celtics
+BB3083,2024-05-07,Los Angeles Lakers,Miami Heat,Luka Doncic,15,11,2,44.0,11,5,0,0,Miami Heat
+BB3084,2025-03-07,Denver Nuggets,Dallas Mavericks,Giannis Antetokounmpo,10,14,13,49.7,29,2,4,3,Denver Nuggets
+BB3085,2024-11-10,Denver Nuggets,Phoenix Suns,Damian Lillard,41,12,7,36.5,9,6,0,2,Denver Nuggets
+BB3086,2025-02-25,Dallas Mavericks,Boston Celtics,Stephen Curry,4,5,5,65.5,15,5,0,4,Dallas Mavericks
+BB3087,2023-10-14,Dallas Mavericks,Brooklyn Nets,Damian Lillard,30,11,0,47.3,46,1,4,3,Dallas Mavericks
+BB3088,2023-06-10,Los Angeles Lakers,Golden State Warriors,Anthony Davis,13,3,13,57.9,39,2,5,2,Golden State Warriors
+BB3089,2025-10-22,Miami Heat,Los Angeles Lakers,LeBron James,25,9,17,63.6,14,0,2,0,Los Angeles Lakers
+BB3090,2024-12-09,Golden State Warriors,Miami Heat,Damian Lillard,30,3,3,31.0,15,5,2,0,Miami Heat
+BB3091,2023-04-20,Golden State Warriors,Miami Heat,Giannis Antetokounmpo,30,7,8,33.6,39,3,1,2,Miami Heat
+BB3092,2023-07-20,Dallas Mavericks,Golden State Warriors,Joel Embiid,2,4,14,48.6,19,6,2,4,Dallas Mavericks
+BB3093,2025-06-14,Boston Celtics,Denver Nuggets,Stephen Curry,5,10,11,62.3,31,6,4,1,Boston Celtics
+BB3094,2024-04-20,Phoenix Suns,Denver Nuggets,Kyrie Irving,26,8,15,52.9,20,3,2,0,Denver Nuggets
+BB3095,2023-06-05,Los Angeles Lakers,Dallas Mavericks,Damian Lillard,33,12,18,57.1,44,1,0,3,Los Angeles Lakers
+BB3096,2024-11-28,Boston Celtics,Golden State Warriors,Luka Doncic,8,0,13,33.1,48,3,1,1,Golden State Warriors
+BB3097,2025-03-23,Dallas Mavericks,Phoenix Suns,Stephen Curry,5,6,17,45.9,25,6,2,4,Phoenix Suns
+BB3098,2024-10-30,Los Angeles Lakers,Denver Nuggets,Damian Lillard,37,8,13,34.5,14,1,4,4,Los Angeles Lakers
+BB3099,2023-03-02,Golden State Warriors,Dallas Mavericks,Stephen Curry,50,4,17,65.2,31,2,3,3,Dallas Mavericks

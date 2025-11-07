@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile & Stats – SportPulse</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #23235b;
+            --secondary: #4C6FFF;
+            --accent: #8A5CFF;
+            --bg: linear-gradient(135deg, #181A3D 0%, #23235b 100%);
+            --card-bg: rgba(30, 34, 70, 0.95);
+            --sidebar-bg: #181A3D;
+            --text-main: #fff;
+            --text-muted: #a0a3c4;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+        }
+        .no-select {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .sidebar {
+            background: var(--sidebar-bg);
+            border-right: 1px solid #23235b;
+        }
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 1.25rem;
+            box-shadow: 0 4px 24px 0 rgba(44, 62, 80, 0.15);
+            transition: box-shadow 0.2s;
+        }
+        .dashboard-card:hover {
+            box-shadow: 0 8px 32px 0 rgba(44, 62, 80, 0.22);
+        }
+        .progress-75 {
+            width: 75%;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: background 0.15s, color 0.15s;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background: var(--secondary);
+            color: #fff;
+        }
+        .sidebar-link svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        .sidebar-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--secondary);
+            color: #fff;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+
+        .stat-circle {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .stat-circle svg {
+            transform: rotate(-90deg);
+        }
+
+        .stat-circle circle {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+        }
+
+        .stat-circle .bg {
+            stroke: rgba(255,255,255,0.1);
+        }
+
+        .stat-circle .progress {
+            stroke: url(#gradient);
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        .activity-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+
+        .activity-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            transition: width 1s ease;
+        }
+
+        .achievement-badge {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(76,111,255,0.2), rgba(138,92,255,0.2));
+            border: 2px solid rgba(76,111,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .achievement-badge.unlocked {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            border-color: transparent;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(76,111,255,0.2);
+        }
+
+        .achievement-badge .icon {
+            font-size: 2.5rem;
+            filter: grayscale(1);
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+
+        .achievement-badge.unlocked .icon {
+            filter: grayscale(0);
+            opacity: 1;
+            animation: bounce 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(76,111,255,0.1), rgba(138,92,255,0.1));
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .progress-ring {
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card {
+            background: linear-gradient(135deg, rgba(76,111,255,0.1), rgba(138,92,255,0.1));
+            border: 1px solid rgba(76,111,255,0.2);
+            padding: 1rem;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(76,111,255,0.4);
+        }
+
+        .achievement-card.locked {
+            filter: grayscale(1);
+            opacity: 0.5;
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-rarity {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .rarity-rare {
+            background: rgba(59, 130, 246, 0.2);
+            color: rgb(147, 197, 253);
+        }
+
+        .rarity-epic {
+            background: rgba(168, 85, 247, 0.2);
+            color: rgb(216, 180, 254);
+        }
+
+        .rarity-legendary {
+            background: rgba(245, 158, 11, 0.2);
+            color: rgb(252, 211, 77);
+        }
+
+        .achievement-notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #4C6FFF, #8A5CFF);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(76,111,255,0.3);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 50;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        /* Ensure input fields are readable on dark backgrounds */
+        .input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-main);
+            outline: none;
+            transition: box-shadow 0.18s ease, transform 0.12s ease;
+        }
+
+        .input::placeholder { color: rgba(255,255,255,0.45); }
+        .input:focus { box-shadow: 0 6px 18px rgba(76,111,255,0.06); transform: translateY(-2px); }
+
+        .profile-header { transition: transform 0.18s ease, box-shadow 0.18s ease; }
+        .profile-header:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.35); }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes glow {
+            0% { filter: brightness(1) blur(3px); }
+            50% { filter: brightness(1.2) blur(4px); }
+            100% { filter: brightness(1) blur(3px); }
+        }
+    </style>
+    <script src="../js/userInfo.js" type="module"></script>
+    <script type="module">
+        import { updateUserDisplay } from '../js/userInfo.js';
+        document.addEventListener('DOMContentLoaded', updateUserDisplay);
+        window.addEventListener('storage', updateUserDisplay);
+            // Profile edit handlers
+            document.addEventListener('DOMContentLoaded', () => {
+                const editBtn = document.getElementById('editProfileBtn');
+                const form = document.getElementById('profileEditForm');
+                const saveBtn = document.getElementById('saveProfile');
+                const exportBtn = document.getElementById('exportData');
+
+                function loadForm() {
+                    const user = JSON.parse(localStorage.getItem('sportpulse_user')) || { name: '', email: '', avatar: '', preferences: {} };
+                    document.getElementById('pfName').value = user.name || '';
+                    document.getElementById('pfLocation').value = user.location || '';
+                    document.getElementById('pfEmail').value = user.email || '';
+                    document.getElementById('pfFavoriteSport').value = user.favoriteSport || '';
+                    document.getElementById('pfFavoriteTeam').value = user.favoriteTeam || '';
+                    document.getElementById('pfPreferences').value = user.preferences && user.preferences.showpiece ? user.preferences.showpiece : '';
+                }
+
+                editBtn.onclick = () => {
+                    form.classList.toggle('hidden');
+                    if (!form.classList.contains('hidden')) loadForm();
+                };
+
+                saveBtn.onclick = async () => {
+                    const name = document.getElementById('pfName').value;
+                    const location = document.getElementById('pfLocation').value;
+                    const email = document.getElementById('pfEmail').value;
+                    const favoriteSport = document.getElementById('pfFavoriteSport').value;
+                    const favoriteTeam = document.getElementById('pfFavoriteTeam').value;
+                    const prefs = document.getElementById('pfPreferences').value;
+                    const picInput = document.getElementById('pfPicture');
+                    let avatar = null;
+                    if (picInput.files && picInput.files[0]) {
+                        const f = picInput.files[0];
+                        // store as object URL (session) to preview; for persistence we'd need base64 but keep simple
+                        avatar = URL.createObjectURL(f);
+                    }
+                    const user = JSON.parse(localStorage.getItem('sportpulse_user')) || {};
+                    user.name = name;
+                    user.location = location;
+                    user.email = email;
+                    user.favoriteSport = favoriteSport;
+                    user.favoriteTeam = favoriteTeam;
+                    user.avatar = avatar || user.avatar;
+                    user.preferences = user.preferences || {};
+                    user.preferences.showpiece = prefs;
+                    localStorage.setItem('sportpulse_user', JSON.stringify(user));
+                    // update displays
+                    document.querySelectorAll('[data-user-name]').forEach(el => el.textContent = user.name || 'User');
+                    document.querySelectorAll('[data-user-bio]').forEach(el => el.textContent = user.bio || '');
+                    document.querySelectorAll('[data-user-avatar]').forEach(el => {
+                        if (user.avatar) el.innerHTML = `<img src="${user.avatar}" class="w-full h-full object-cover rounded-full">`;
+                    });
+                    form.classList.add('hidden');
+                };
+
+                exportBtn.onclick = () => {
+                    const user = JSON.parse(localStorage.getItem('sportpulse_user')) || {};
+                    const blob = new Blob([JSON.stringify(user, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = 'sportpulse_user.json';
+                    document.body.appendChild(a); a.click(); a.remove();
+                    URL.revokeObjectURL(url);
+                };
+                // Import CSV handler: basic parser for match rows -> store as sportpulse_stats
+                const importBtn = document.getElementById('importStatsBtn');
+                const importFile = document.getElementById('importStatsFile');
+                importBtn.onclick = () => importFile.click();
+                importFile.onchange = async (e) => {
+                    const file = e.target.files && e.target.files[0];
+                    if (!file) return;
+                    const text = await file.text();
+                    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l);
+                    // naive CSV parse: assume header present
+                    const header = lines.shift().split(',').map(h => h.trim());
+                    const rows = lines.map(line => {
+                        const cols = line.split(',').map(c => c.trim());
+                        const obj = {};
+                        header.forEach((h, i) => obj[h] = cols[i] || '');
+                        return obj;
+                    });
+                    localStorage.setItem('sportpulse_stats', JSON.stringify(rows));
+                    alert('Imported ' + rows.length + ' rows to sportpulse_stats');
+                    importFile.value = '';
+                };
+            });
+    </script>
+</head>
+<body class="min-h-screen flex no-select">
+  <!-- Sidebar -->
+  <aside class="sidebar w-20 md:w-60 h-screen fixed left-0 top-0 flex flex-col items-center py-6 z-10">
+    <div class="sidebar-icon mb-8"><img src="../assets/images/logo.svg" alt="SportPulse" class="w-8 h-8"></div>
+    <nav class="flex flex-col gap-2 w-full items-center md:items-stretch">
+        <a href="../dashboard.html" class="sidebar-link">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <span class="hidden md:inline">Home</span>
+        </a>
+        <a href="cricket.html" class="sidebar-link">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span class="hidden md:inline">Cricket</span>
+        </a>
+        <a href="football.html" class="sidebar-link">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/></svg>
+            <span class="hidden md:inline">Football</span>
+        </a>
+        <a href="basketball.html" class="sidebar-link">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span class="hidden md:inline">Basketball</span>
+        </a>
+        <a href="news.html" class="sidebar-link">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7"/></svg>
+            <span class="hidden md:inline">News</span>
+        </a>
+        <a href="profile.html" class="sidebar-link active">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            <span class="hidden md:inline">Profile & Stats</span>
+        </a>
+    </nav>
+    <div class="mt-auto mb-4 flex flex-col items-center w-full">
+        <div data-user-avatar class="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[var(--accent)] flex items-center justify-center text-lg font-bold text-white mb-2 overflow-hidden"></div>
+        <div data-user-name class="text-xs text-center text-[var(--text-muted)]">User</div>
+        <!-- Sign out placed in the sidebar bottom for easier access -->
+        <button id="signOutBtn" class="mt-3 px-3 py-2 w-11/12 rounded bg-red-600 text-white text-sm hover:bg-red-700 transition">Sign Out</button>
+    </div>
+</aside>
+  <main class="flex-1 ml-20 md:ml-60 p-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Profile Header -->
+        <div class="dashboard-card p-8 mb-8">
+            <div class="flex items-center gap-8">
+                <div data-user-avatar class="w-24 h-24 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[var(--accent)] flex items-center justify-center text-4xl font-bold text-white"></div>
+                <div>
+                    <div class="flex items-center gap-4">
+                        <h1 class="text-3xl font-bold mb-2" data-user-name>User Name</h1>
+                        <button id="editProfileBtn" class="px-3 py-1 rounded bg-white/8 text-sm">Edit</button>
+                    </div>
+                    <p class="text-[var(--text-muted)] max-w-2xl" data-user-bio>Your bio appears here...</p>
+                    <div id="profileEditForm" class="mt-4 hidden">
+                        <h3 class="text-lg font-medium mb-2">Edit Profile</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input id="pfName" class="input" placeholder="Full name">
+                            <input id="pfLocation" class="input" placeholder="Location">
+                            <input id="pfEmail" class="input" placeholder="Email">
+                            <input id="pfFavoriteSport" class="input" placeholder="Favorite sport (e.g., Cricket)">
+                            <input id="pfPicture" type="file" accept="image/*" class="input">
+                            <input id="pfFavoriteTeam" class="input" placeholder="Favorite team">
+                            <textarea id="pfPreferences" class="input col-span-2" placeholder="Additional notes or preferences"></textarea>
+                        </div>
+                        <div class="flex gap-2 mt-3">
+                            <button id="saveProfile" class="px-4 py-2 rounded bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] text-white">Save</button>
+                            <button id="exportData" class="px-4 py-2 rounded border border-white/10 text-sm">Export Data</button>
+                            <input id="importStatsFile" type="file" accept=".csv" class="hidden" />
+                            <button id="importStatsBtn" class="px-4 py-2 rounded border border-white/10 text-sm">Import Stats (CSV)</button>
+                        </div>
+                        <!-- Sign Out is available in the sidebar bottom -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sign Out Confirmation Modal -->
+        <div id="signOutModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+            <div class="bg-[var(--card-bg)] p-8 rounded-2xl max-w-md w-full mx-4 transform transition-all scale-95 opacity-0" id="modalContent">
+                <h3 class="text-2xl font-bold mb-4">Sign Out</h3>
+                <p class="text-[var(--text-muted)] mb-6">Are you sure you want to sign out? Your session will end.</p>
+                <div class="flex gap-4">
+                    <button id="confirmSignOut" class="px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg hover:from-red-600 hover:to-red-700 flex-1">
+                        Yes, Sign Out
+                    </button>
+                    <button id="cancelSignOut" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg flex-1">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="dashboard-card p-6">
+                <h3 class="font-medium mb-6">Profile Overview</h3>
+                <canvas id="focusChart"></canvas>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="font-medium mb-6">Match History</h3>
+                <canvas id="sleepChart"></canvas>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="font-medium mb-6">Player Stats</h3>
+                <canvas id="moodChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Detailed Analytics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="dashboard-card p-6">
+                <h3 class="font-medium mb-6">Activity Breakdown</h3>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="stat-circle">
+                            <svg width="120" height="120" viewBox="0 0 120 120">
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" style="stop-color:var(--secondary)" />
+                                        <stop offset="100%" style="stop-color:var(--accent)" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="bg" cx="60" cy="60" r="54" />
+                                <circle class="progress" id="focusProgress" cx="60" cy="60" r="54" stroke-dasharray="339.292" stroke-dashoffset="0" />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                <span class="text-2xl font-bold" id="focusTime">3h</span>
+                                <span class="text-xs text-[var(--text-muted)]">News Time</span>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="mb-4">
+                                <div class="flex justify-between mb-2">
+                                    <span>Sports</span>
+                                    <span id="sportsTime">12h 30m</span>
+                                </div>
+                                <div class="activity-bar">
+                                    <div class="fill" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span>Break Time</span>
+                                    <span id="breakTime">2h 15m</span>
+                                </div>
+                                <div class="activity-bar">
+                                    <div class="fill" style="width: 25%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="font-medium mb-6">Achievement Progress</h3>
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="text-center achievement-group">
+                        <div class="achievement-badge" data-achievement="triple">
+                            <div class="icon">🏀</div>
+                            <div class="progress-ring"></div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="text-sm font-medium">Triple-Double</div>
+                            <div class="text-xs text-[var(--text-muted)]">
+                                <span class="current-level">0</span>/5
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center achievement-group">
+                        <div class="achievement-badge" data-achievement="hattrick">
+                            <div class="icon">⚽</div>
+                            <div class="progress-ring"></div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="text-sm font-medium">Hat-Trick Hero</div>
+                            <div class="text-xs text-[var(--text-muted)]">
+                                <span class="current-level">0</span>/5
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center achievement-group">
+                        <div class="achievement-badge" data-achievement="century">
+                            <div class="icon">🏏</div>
+                            <div class="progress-ring"></div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="text-sm font-medium">Century Maker</div>
+                            <div class="text-xs text-[var(--text-muted)]">
+                                <span class="current-level">0</span>/5
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-2 gap-4 mt-6">
+                    <div class="stat-card">
+                        <h4 class="text-sm text-[var(--text-muted)] mb-2">Weekly Matches</h4>
+                        <div class="text-2xl font-bold" id="weeklyMatches">0</div>
+                        <canvas id="matchesHistoryChart" class="mt-4 w-full h-20"></canvas>
+                    </div>
+                    <div class="stat-card">
+                        <h4 class="text-sm text-[var(--text-muted)] mb-2">Match Completion</h4>
+                        <div class="text-2xl font-bold" id="taskCompletion">0%</div>
+                        <canvas id="taskHistoryChart" class="mt-4 w-full h-20"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievements Showcase -->
+        <div class="dashboard-card p-6 mb-8">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center">
+                    <svg class="w-6 h-6 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold">Sports Achievements</h3>
+                    <p class="text-[var(--text-muted)]">Your sports milestones</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="achievementsGrid">
+                <!-- Basketball Achievements -->
+                <div class="achievement-card">
+                    <div class="achievement-icon">🏀</div>
+                    <div class="font-medium mb-1">Triple-Double</div>
+                    <div class="text-sm text-[var(--text-muted)]">10+ in points, assists & rebounds</div>
+                    <div class="achievement-rarity rarity-epic">EPIC</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">🎯</div>
+                    <div class="font-medium mb-1">Sharpshooter</div>
+                    <div class="text-sm text-[var(--text-muted)]">90%+ shooting accuracy</div>
+                    <div class="achievement-rarity rarity-epic">EPIC</div>
+                </div>
+
+                <!-- Football Achievements -->
+                <div class="achievement-card">
+                    <div class="achievement-icon">⚽</div>
+                    <div class="font-medium mb-1">Hat-Trick Hero</div>
+                    <div class="text-sm text-[var(--text-muted)]">3 goals in one match</div>
+                    <div class="achievement-rarity rarity-epic">EPIC</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">🥅</div>
+                    <div class="font-medium mb-1">Clean Sheet</div>
+                    <div class="text-sm text-[var(--text-muted)]">No goals conceded</div>
+                    <div class="achievement-rarity rarity-rare">RARE</div>
+                </div>
+
+                <!-- Cricket Achievements -->
+                <div class="achievement-card">
+                    <div class="achievement-icon">🏏</div>
+                    <div class="font-medium mb-1">Century Maker</div>
+                    <div class="text-sm text-[var(--text-muted)]">Score 100+ runs</div>
+                    <div class="achievement-rarity rarity-rare">RARE</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">�</div>
+                    <div class="font-medium mb-1">Perfect Over</div>
+                    <div class="text-sm text-[var(--text-muted)]">6 wickets in 6 balls</div>
+                    <div class="achievement-rarity rarity-legendary">LEGENDARY</div>
+                </div>
+
+                <!-- General Achievements -->
+                <div class="achievement-card">
+                    <div class="achievement-icon">�</div>
+                    <div class="font-medium mb-1">Win Streak</div>
+                    <div class="text-sm text-[var(--text-muted)]">5 consecutive wins</div>
+                    <div class="achievement-rarity rarity-epic">EPIC</div>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">🏆</div>
+                    <div class="font-medium mb-1">MVP</div>
+                    <div class="text-sm text-[var(--text-muted)]">Most Valuable Player</div>
+                    <div class="achievement-rarity rarity-legendary">LEGENDARY</div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </main>
+  <script>
+    // --- Profile stats updater ---
+    function updateProfileStats() {
+        // Tasks today
+        const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        const today = (new Date()).toISOString().slice(0,10);
+    const tasksToday = tasks.filter(t => t.date === today).length;
+    const tasksTodayEl = document.getElementById('tasksToday');
+    if (tasksTodayEl) tasksTodayEl.textContent = tasksToday;
+
+        // Mood entries this week
+        const moods = JSON.parse(localStorage.getItem('moods') || '[]');
+        const weekAgo = new Date();
+        weekAgo.setDate(weekAgo.getDate() - 6);
+    const moodsThisWeek = moods.filter(m => new Date(m.date) >= weekAgo).length;
+    const moodCountEl = document.getElementById('moodCount');
+    if (moodCountEl) moodCountEl.textContent = moodsThisWeek;
+
+        // Sleep last night
+        const sleepLogs = JSON.parse(localStorage.getItem('sleepLogs') || '[]');
+        let lastSleep = sleepLogs.length ? sleepLogs[sleepLogs.length-1] : null;
+        let sleepHours = lastSleep ? lastSleep.hours : 0;
+    const sleepHoursEl = document.getElementById('sleepHours');
+    if (sleepHoursEl) sleepHoursEl.textContent = sleepHours + 'h';
+
+        // Productivity Score (simple: avg of completion)
+        let prodScore = 0;
+        if (tasks.length) {
+            const completed = tasks.filter(t => t.completed).length;
+            prodScore = Math.round((completed / tasks.length) * 100);
+        }
+        const prodScoreEl = document.getElementById('prodScore');
+        if (prodScoreEl) prodScoreEl.textContent = prodScore + '%';
+        // Animate SVG circle if present
+        const circle = document.getElementById('prodScoreCircle');
+        if (circle) {
+            const total = 282.74;
+            circle.setAttribute('stroke-dashoffset', total - (prodScore/100)*total);
+        }
+    }
+    // Listen for storage changes and update
+    window.addEventListener('storage', updateProfileStats);
+    document.addEventListener('DOMContentLoaded', updateProfileStats);
+
+    // --- Notification system ---
+    function showNotification(msg) {
+        let container = document.getElementById('notification-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'notification-container';
+            container.style.position = 'fixed';
+            container.style.bottom = '2rem';
+            container.style.right = '2rem';
+            container.style.zIndex = 9999;
+            document.body.appendChild(container);
+        }
+        const n = document.createElement('div');
+        n.textContent = msg;
+        n.style.background = 'linear-gradient(90deg,#4C6FFF,#8A5CFF)';
+        n.style.color = '#fff';
+        n.style.padding = '1rem 2rem';
+        n.style.marginTop = '0.5rem';
+        n.style.borderRadius = '1rem';
+        n.style.boxShadow = '0 2px 12px #0003';
+        n.style.fontWeight = 'bold';
+        n.style.fontSize = '1rem';
+        container.appendChild(n);
+        setTimeout(() => n.remove(), 2000);
+    }
+
+    // --- Dark/Light Mode Toggle ---
+    const themeToggleBtn = document.getElementById('themeToggleBtn') || document.getElementById('themeToggle');
+    function setTheme(mode) {
+        document.documentElement.setAttribute('data-theme', mode);
+        localStorage.setItem('sportpulse_theme', mode);
+        if (mode === 'light') {
+            document.body.style.background = '#f8fafc';
+            document.body.style.color = '#23235b';
+        } else {
+            document.body.style.background = '';
+            document.body.style.color = '';
+        }
+    }
+    if (themeToggleBtn) {
+        themeToggleBtn.onclick = function() {
+            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            setTheme(current === 'dark' ? 'light' : 'dark');
+        };
+    }
+    // On load, set theme from storage
+    (function() {
+        const saved = localStorage.getItem('sportpulse_theme');
+        if (saved) setTheme(saved);
+    })();
+
+    // --- Onboarding Tour (simple example) ---
+    const onboardingBtn = document.getElementById('onboardingBtn');
+    if (onboardingBtn) {
+        onboardingBtn.onclick = function() {
+            alert('Welcome to SportPulse!\n\n- Use the sidebar to navigate.\n- View team and player stats, match history, and news.\n- Export your profile or import stats from CSV.\n- Toggle dark/light mode anytime.\n\nEnjoy exploring the data!');
+        };
+    };
+
+
+    function updateActivityStats() {
+        // Update focus progress circle
+        const focusProgress = document.getElementById('focusProgress');
+        const focusTime = document.getElementById('focusTime');
+        
+        // Calculate focus time from tasks
+        const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        const totalFocusMinutes = tasks.reduce((sum, task) => {
+            return sum + (task.completed ? (task.duration || 0) : 0);
+        }, 0);
+        
+        const focusHours = Math.floor(totalFocusMinutes / 60);
+        const progressPercent = Math.min(focusHours / 8 * 100, 100); // 8 hours is 100%
+        
+        focusTime.textContent = `${focusHours}h`;
+        focusProgress.style.strokeDashoffset = 339.292 * (1 - progressPercent / 100);
+        
+        // Update activity bars
+        updateActivityBars();
+        
+        // Update achievement badges
+        updateAchievements();
+    }
+
+    function updateActivityBars() {
+        const bars = document.querySelectorAll('.activity-bar .fill');
+        bars.forEach(bar => {
+            const target = parseFloat(bar.style.width);
+            bar.style.width = '0%';
+            setTimeout(() => {
+                bar.style.width = `${target}%`;
+            }, 100);
+        });
+    }
+
+    function updateAchievements() {
+        const stats = JSON.parse(localStorage.getItem('sportpulse_stats') || '[]');
+        
+        // Calculate achievements
+        const tripleDoubles = calculateTripleDoubles(stats);
+        const hatTricks = calculateHatTricks(stats);
+        const centuries = calculateCenturies(stats);
+
+        // Update badges
+        updateBadge('triple', tripleDoubles, [1, 3, 5, 7, 10]); // Triple-doubles
+        updateBadge('hattrick', hatTricks, [1, 3, 5, 7, 10]); // Hat-tricks
+        updateBadge('century', centuries, [1, 3, 5, 7, 10]); // Centuries
+
+        // Update charts
+        updateFocusChart();
+        updateTaskChart();
+    }
+
+    function updateBadge(type, current, levels) {
+        const badge = document.querySelector(`[data-achievement="${type}"]`);
+        const levelDisplay = badge.parentElement.querySelector('.current-level');
+        let level = 0;
+
+        for(let i = 0; i < levels.length; i++) {
+            if(current >= levels[i]) level = i + 1;
+        }
+
+        levelDisplay.textContent = level;
+        badge.classList.toggle('unlocked', level > 0);
+    }
+
+    function updateFocusChart() {
+        const ctx = document.getElementById('focusHistoryChart').getContext('2d');
+        const data = getLast7DaysFocusTime();
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    data: data.values,
+                    borderColor: '#4C6FFF',
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: 'rgba(76,111,255,0.1)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { display: false },
+                    y: { display: false }
+                }
+            }
+        });
+    }
+
+    function updateTaskChart() {
+        const ctx = document.getElementById('taskHistoryChart').getContext('2d');
+        const data = getLast7DaysTaskCompletion();
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    data: data.values,
+                    backgroundColor: '#8A5CFF'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { display: false },
+                    y: { display: false }
+                }
+            }
+        });
+    }
+
+    // Helper functions for sports achievements
+    function calculateTripleDoubles(stats) {
+        return stats.filter(game => {
+            const points = parseInt(game.points) || 0;
+            const assists = parseInt(game.assists) || 0;
+            const rebounds = parseInt(game.rebounds) || 0;
+            return points >= 10 && assists >= 10 && rebounds >= 10;
+        }).length;
+    }
+
+    function calculateHatTricks(stats) {
+        return stats.filter(game => {
+            return (parseInt(game.goals) || 0) >= 3;
+        }).length;
+    }
+
+    function calculateCenturies(stats) {
+        return stats.filter(game => {
+            return (parseInt(game.runs) || 0) >= 100;
+        }).length;
+    }
+
+    function calculateSharpshooter(stats) {
+        const sharpshooterGames = stats.filter(game => {
+            const attempts = parseInt(game.shots_attempted) || 0;
+            const made = parseInt(game.shots_made) || 0;
+            return attempts >= 10 && (made / attempts >= 0.9);
+        }).length;
+        return sharpshooterGames;
+    }
+
+    function calculateCleanSheets(stats) {
+        return stats.filter(game => {
+            return game.sport === 'football' && (parseInt(game.goals_conceded) || 0) === 0;
+        }).length;
+    }
+
+    function calculatePerfectOvers(stats) {
+        return stats.filter(game => {
+            return game.sport === 'cricket' && (parseInt(game.wickets_in_over) || 0) === 6;
+        }).length;
+    }
+
+    function calculateWinStreak(stats) {
+        let currentStreak = 0;
+        let maxStreak = 0;
+        
+        stats.sort((a, b) => new Date(a.date) - new Date(b.date))
+             .forEach(game => {
+                 if (game.result === 'win') {
+                     currentStreak++;
+                     maxStreak = Math.max(maxStreak, currentStreak);
+                 } else {
+                     currentStreak = 0;
+                 }
+             });
+        
+        return maxStreak;
+    }
+
+    function calculateMVP(stats) {
+        const mvpPoints = stats.reduce((total, game) => {
+            let points = 0;
+            if (game.sport === 'basketball') {
+                points = (parseInt(game.points) || 0) + (parseInt(game.assists) || 0) * 1.5 + (parseInt(game.rebounds) || 0);
+            } else if (game.sport === 'football') {
+                points = (parseInt(game.goals) || 0) * 2 + (parseInt(game.assists) || 0);
+            } else if (game.sport === 'cricket') {
+                points = (parseInt(game.runs) || 0) / 25 + (parseInt(game.wickets) || 0) * 2;
+            }
+            return total + points;
+        }, 0);
+        
+        return mvpPoints >= 1000; // MVP threshold
+    }
+
+    // Sign Out Functionality
+    const signOutBtn = document.getElementById('signOutBtn');
+    const signOutModal = document.getElementById('signOutModal');
+    const modalContent = document.getElementById('modalContent');
+    const confirmSignOut = document.getElementById('confirmSignOut');
+    const cancelSignOut = document.getElementById('cancelSignOut');
+
+    function showSignOutModal() {
+        signOutModal.classList.remove('hidden');
+        signOutModal.classList.add('flex');
+        // Animate modal in
+        setTimeout(() => {
+            modalContent.classList.remove('scale-95', 'opacity-0');
+            modalContent.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    function hideSignOutModal() {
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        modalContent.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+            signOutModal.classList.remove('flex');
+            signOutModal.classList.add('hidden');
+        }, 200);
+    }
+
+    function handleSignOut() {
+        // Clear user data
+        localStorage.removeItem('sportpulse_user');
+        localStorage.removeItem('sportpulse_stats');
+        // Redirect to landing page
+        window.location.href = '../index.html';
+    }
+
+    signOutBtn.addEventListener('click', showSignOutModal);
+    cancelSignOut.addEventListener('click', hideSignOutModal);
+    confirmSignOut.addEventListener('click', handleSignOut);
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        updateAchievements();
+        setInterval(updateAchievements, 60000);
+    });
+  </script>
+  <script type="module">
+    import { AchievementSystem } from '../js/achievements.js';
+
+    function renderAchievements() {
+        const grid = document.getElementById('achievementsGrid');
+        const earnedAchievements = AchievementSystem.getUserAchievements();
+        
+        const achievements = [
+            {
+                id: 'triple-double',
+                icon: '🏀',
+                title: 'Triple-Double Master',
+                description: '10+ in points, assists & rebounds',
+                rarity: 'epic'
+            },
+            {
+                id: 'sharpshooter',
+                icon: '🎯',
+                title: 'Sharpshooter Elite',
+                description: '90%+ shooting accuracy',
+                rarity: 'epic'
+            },
+            {
+                id: 'hattrick-hero',
+                icon: '⚽',
+                title: 'Hat-Trick Hero',
+                description: '3 goals in one match',
+                rarity: 'epic'
+            },
+            {
+                id: 'clean-sheet',
+                icon: '🥅',
+                title: 'Clean Sheet Guardian',
+                description: 'No goals conceded',
+                rarity: 'rare'
+            },
+            {
+                id: 'century-maker',
+                icon: '🏏',
+                title: 'Century Master',
+                description: 'Score 100+ runs',
+                rarity: 'rare'
+            },
+            {
+                id: 'perfect-over',
+                icon: '🎯',
+                title: 'Perfect Over Legend',
+                description: '6 wickets in 6 balls',
+                rarity: 'legendary'
+            },
+            {
+                id: 'win-streak',
+                icon: '🔥',
+                title: 'Victory Streak',
+                description: '5 consecutive wins',
+                rarity: 'epic'
+            },
+            {
+                id: 'mvp',
+                icon: '🏆',
+                title: 'League MVP',
+                description: 'Most Valuable Player',
+                rarity: 'legendary'
+            }
+        ];
+        
+        grid.innerHTML = achievements
+            .map(achievement => `
+                <div class="achievement-card ${earnedAchievements.includes(achievement.id) ? '' : 'locked'}" data-achievement="${achievement.id}">
+                    <div class="achievement-icon">${achievement.icon}</div>
+                    <div class="font-medium mb-1">${achievement.title}</div>
+                    <div class="text-sm text-[var(--text-muted)]">${achievement.description}</div>
+                    <div class="achievement-rarity rarity-${achievement.rarity}">${achievement.rarity}</div>
+                </div>
+            `).join('');
+
+        // Update the progress cards
+        document.querySelector('[data-achievement="triple"] .current-level').textContent = earnedAchievements.filter(a => a.startsWith('triple')).length;
+        document.querySelector('[data-achievement="hattrick"] .current-level').textContent = earnedAchievements.filter(a => a.startsWith('hattrick')).length;
+        document.querySelector('[data-achievement="century"] .current-level').textContent = earnedAchievements.filter(a => a.startsWith('century')).length;
+    }
+
+    function showAchievementNotification(achievement) {
+        const notification = document.createElement('div');
+        notification.className = 'achievement-notification';
+        notification.innerHTML = `
+            <div class="text-3xl">${achievement.icon}</div>
+            <div>
+                <div class="font-medium">Achievement Unlocked!</div>
+                <div class="text-sm">${achievement.title}</div>
+            </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Remove notification after 5 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideIn 0.5s ease-out reverse';
+            setTimeout(() => notification.remove(), 500);
+        }, 5000);
+    }
+
+    // Listen for achievement unlocks
+    window.addEventListener('achievementUnlocked', (event) => {
+        const achievement = event.detail;
+        showAchievementNotification(achievement);
+        renderAchievements();
+    });
+
+    // Check achievements periodically and on data changes
+    async function checkAchievements() {
+        const result = await AchievementSystem.checkAchievements();
+        renderAchievements();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderAchievements();
+        checkAchievements();
+    });
+
+    // Listen for data changes
+    window.addEventListener('storage', checkAchievements);
+    window.addEventListener('tasksUpdated', checkAchievements);
+</script>
+</body>
+</html>

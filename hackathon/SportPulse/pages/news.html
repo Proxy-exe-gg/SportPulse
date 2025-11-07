@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportPulse - Sports News</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #23235b;
+            --secondary: #4C6FFF;
+            --accent: #8A5CFF;
+            --bg: linear-gradient(135deg, #181A3D 0%, #23235b 100%);
+            --card-bg: rgba(30, 34, 70, 0.55);
+            --sidebar-bg: rgba(24, 26, 61, 0.85);
+            --text-main: #fff;
+            --text-muted: #a0a3c4;
+            --glass-blur: blur(18px);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .news-section {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .news-section:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .news-header {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: bold;
+            font-size: 1.5rem;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .news-item {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .news-item.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .news-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .source {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .section-container {
+            backdrop-filter: var(--glass-blur);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .news-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255,255,255,0.04);
+            padding: 0.9rem 1rem;
+            border-radius: 0.75rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+        .news-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(2,6,23,0.6); }
+        .news-badge { font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 0.5rem; background: rgba(76,111,255,0.14); color: var(--secondary); font-weight: 600; }
+        .news-headline { font-weight: 600; line-height: 1.25; }
+        .news-source { color: var(--text-muted); font-size: 0.85rem; }
+
+        .back-button {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76,111,255,0.3);
+        }
+    </style>
+</head>
+<body class="p-8">
+        <div id="particles"></div>
+        <div class="max-w-7xl mx-auto">
+                <!-- Navbar (copied from index for consistent layout) -->
+                <div class="flex justify-between items-center py-6">
+                    <div class="relative">
+                        <div class="logo">
+                            <div class="logo-glow"></div>
+                            <span class="text-2xl tracking-tight">Sport<span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">Pulse</span></span>
+                        </div>
+                    </div>
+                    <nav class="hidden md:flex items-center space-x-10">
+                        <a href="../index.html" class="nav-link hover:text-indigo-400 transition-colors">Home</a>
+                        <a href="../dashboard.html" class="nav-link hover:text-indigo-400 transition-colors">Dashboard</a>
+                        <a href="news.html" class="nav-link hover:text-indigo-400 transition-colors">News</a>
+                    </nav>
+                </div>
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mb-8">
+            <a href="../dashboard.html" class="back-button flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Back to Dashboard
+            </a>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] bg-clip-text text-transparent">
+                Sports News
+            </h1>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8">
+            <!-- Cricket News Section -->
+            <div class="news-section">
+                <h2 class="news-header">Cricket News</h2>
+                <div id="cricket-news" class="space-y-4 p-4"></div>
+            </div>
+
+            <!-- Football News Section -->
+            <div class="news-section">
+                <h2 class="news-header">Football News</h2>
+                <div id="football-news" class="space-y-4 p-4"></div>
+            </div>
+
+            <!-- Basketball News Section -->
+            <div class="news-section">
+                <h2 class="news-header">Basketball News</h2>
+                <div id="basketball-news" class="space-y-4 p-4"></div>
+            </div>
+
+            <!-- Overall Sports News Section -->
+            <div class="news-section">
+                <h2 class="news-header">Overall Sports News</h2>
+                <div id="overall-news" class="space-y-4 p-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // News data structure
+        const newsData = {
+            cricket: [
+                // Cricket news will be populated here
+            ],
+            football: [
+                // Football news will be populated here
+            ],
+            basketball: [
+                // Basketball news will be populated here
+            ],
+            overall: [
+                // Overall sports news will be populated here
+            ]
+        };
+
+        // Function to gather news from separate files (prefer per-sport files uploaded at project root).
+        async function fetchNews() {
+            const filesToTry = [
+                { key: 'cricket', path: '../../cricket news.txt' },
+                { key: 'football', path: '../../football news.txt' },
+                { key: 'basketball', path: '../../basketball news.txt' },
+                { key: 'overall', path: '../../overall sports news.txt' }
+            ];
+
+            // Try fetching per-sport files first. If none available, fall back to combined news.txt
+            let foundAny = false;
+            for (const f of filesToTry) {
+                try {
+                    const resp = await fetch(f.path);
+                    if (!resp.ok) continue;
+                    const content = await resp.text();
+                    const lines = content.split('\n').map(l => l.trim()).filter(l => l);
+                    newsData[f.key] = lines.map(line => {
+                        // If the line contains ' - ' use that to split source
+                        const parts = line.split(' - ');
+                        return { headline: parts[0].trim(), source: parts[1] ? parts[1].trim() : '' };
+                    });
+                    foundAny = true;
+                } catch (e) {
+                    // ignore missing file
+                }
+            }
+
+            if (!foundAny) {
+                // fallback to legacy combined file
+                try {
+                    const response = await fetch('../../news.txt');
+                    const text = await response.text();
+                    const sections = text.split('------------------------');
+                    sections.forEach(section => {
+                        const lower = section.toLowerCase();
+                        if (lower.includes('cricket')) {
+                            const lines = section.split('\n').map(l => l.trim()).filter(l => l && !/cricket/i.test(l));
+                            newsData.cricket = lines.map(l => ({ headline: l, source: '' }));
+                        } else if (lower.includes('football')) {
+                            const lines = section.split('\n').map(l => l.trim()).filter(l => l && !/football/i.test(l));
+                            newsData.football = lines.map(l => ({ headline: l, source: '' }));
+                        } else if (lower.includes('basketball')) {
+                            const lines = section.split('\n').map(l => l.trim()).filter(l => l && !/basketball/i.test(l));
+                            newsData.basketball = lines.map(l => ({ headline: l, source: '' }));
+                        } else if (lower.includes('overall')) {
+                            const lines = section.split('\n').map(l => l.trim()).filter(l => l && !/overall/i.test(l));
+                            newsData.overall = lines.map(l => ({ headline: l, source: '' }));
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error fetching fallback news:', error);
+                }
+            }
+
+            // Ensure at least some placeholder content if everything failed
+            ['cricket','football','basketball','overall'].forEach(k => {
+                if (!newsData[k] || !newsData[k].length) {
+                    newsData[k] = [{ headline: `No ${k} news available`, source: '' }];
+                }
+            });
+
+            // Initialize news display
+            displayNews('cricket-news', newsData.cricket);
+            displayNews('football-news', newsData.football);
+            displayNews('basketball-news', newsData.basketball);
+            displayNews('overall-news', newsData.overall);
+
+            // Start shuffling
+            setInterval(() => {
+                shuffleNews('cricket-news', newsData.cricket);
+                shuffleNews('football-news', newsData.football);
+                shuffleNews('basketball-news', newsData.basketball);
+                shuffleNews('overall-news', newsData.overall);
+            }, 5000);
+        }
+
+        // Function to display news in a section
+            function displayNews(sectionId, news) {
+                const section = document.getElementById(sectionId);
+                section.innerHTML = '';
+                news.forEach((item, index) => {
+                    if (index < 6) { // Show only 6 news items at a time
+                        const newsItem = document.createElement('div');
+                        newsItem.className = 'news-item fade-in';
+                        newsItem.style.animationDelay = `${index * 0.06}s`;
+                        newsItem.innerHTML = `
+                            <div class="news-card">
+                                <div class="news-badge">${sectionId.split('-')[0].toUpperCase()}</div>
+                                <div class="flex-1">
+                                    <div class="news-headline text-lg mb-1">${item.headline}</div>
+                                    <div class="news-source">${item.source || 'Source unknown'}</div>
+                                </div>
+                                <div class="text-xs text-[var(--text-muted)] ml-3">•</div>
+                            </div>
+                        `;
+                        section.appendChild(newsItem);
+                    }
+                });
+            }
+
+        // Function to shuffle news
+        function shuffleNews(sectionId, news) {
+            const shuffled = [...news].sort(() => Math.random() - 0.5);
+            displayNews(sectionId, shuffled);
+        }
+
+        // Initialize news on page load
+        fetchNews();
+                    // also initialize particles like landing page
+                    if (window.tsParticles) {
+                            try {
+                                    tsParticles.load("particles", {
+                                        particles: {
+                                            number: { value: 50, density: { enable: true, value_area: 800 } },
+                                            color: { value: "#6366F1" },
+                                            opacity: { value: 0.2 },
+                                            size: { value: 3 },
+                                            move: { enable: true, speed: 1, direction: "none", random: true, out_mode: "out" }
+                                        }
+                                    });
+                            } catch(e) { console.warn('tsParticles init failed', e); }
+                    }
+    </script>
+</body>
+</html>

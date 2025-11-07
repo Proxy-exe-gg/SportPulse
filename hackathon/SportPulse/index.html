@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SportPulse</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/countup.js@2.8.0/dist/countUp.min.js"></script>
+  <link rel="stylesheet" href="css/transitions.css">
+  <style>
+    /* Theme Variables */
+    :root {
+      --gradient-start: #4C6FFF;
+      --gradient-end: #8A5CFF;
+      --primary: #6366F1;
+      --secondary: #8B5CF6;
+      --bg-gradient: #282a3a; /* Changed to solid color */
+      --card-bg: rgba(40, 42, 58, 0.7);
+      --text-primary: #ffffff;
+      --text-secondary: #b4b4b4;
+      --nav-glow: rgba(99, 102, 241, 0.15);
+      --icon-filter: invert(1);
+      --primary-rgb: 99, 102, 241;
+      --secondary-rgb: 139, 92, 246;
+      --text-glow: 0 0 15px rgba(255, 255, 255, 0.3);
+      --nav-button-bg: rgba(99, 102, 241, 0.1);
+      --nav-button-hover: rgba(99, 102, 241, 0.2);
+      --button-text: #ffffff;
+    }
+
+    [data-theme="light"] {
+      --bg-gradient: linear-gradient(135deg, #F8FAFC, #EEF2FF);
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --text-primary: #1E293B;
+      --text-secondary: #4B5563;
+      --nav-glow: rgba(99, 102, 241, 0.2);
+      --nav-button-bg: rgba(99, 102, 241, 0.1);
+      --nav-button-hover: rgba(99, 102, 241, 0.15);
+      --button-text: #4338CA;
+      --icon-filter: invert(0.3);
+    }
+
+    .theme-transition {
+      animation: themeChange 0.5s ease;
+    }
+
+    @keyframes themeChange {
+      0% { opacity: 0; transform: scale(0.98); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      min-height: 100vh;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .card-container {
+      transform: perspective(1500px) rotateY(-12deg) rotateX(12deg);
+      transform-style: preserve-3d;
+    }
+
+    .floating-card {
+      background: var(--card-bg);
+      -webkit-backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      box-shadow: 
+        0 10px 30px -10px rgba(0, 0, 0, 0.5),
+        0 0 20px -5px rgba(99, 102, 241, 0.2);
+      transition: all 0.3s ease;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    [data-theme="light"] .floating-card {
+      border-color: rgba(0, 0, 0, 0.1);
+      box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.1),
+        inset 0 1px 1px rgba(255, 255, 255, 0.7);
+    }
+
+    .floating-card:hover {
+      transform: translateY(-10px) translateZ(20px);
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.4);
+    }
+
+    .floating-card::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      filter: blur(25px);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+      border-radius: inherit;
+    }
+
+    .floating-card:hover::after {
+      opacity: 0.15;
+    }
+
+    .card-flip {
+      perspective: 1000px;
+    }
+
+    .card-flip:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-inner {
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .card-front, .card-back {
+      backface-visibility: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+    }
+
+    @keyframes float {
+      0% { transform: translateZ(20px); }
+      50% { transform: translateZ(30px); }
+      100% { transform: translateZ(20px); }
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(2);
+        opacity: 0;
+      }
+    }
+
+    .progress-gradient, .button-gradient {
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+    }
+
+    .gradient-start {
+      stop-color: var(--gradient-start);
+    }
+
+    .gradient-end {
+      stop-color: var(--gradient-end);
+    }
+
+    #particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.4;
+    }
+
+    .sparkline {
+      fill: none;
+      stroke: url(#sparklineGradient);
+      stroke-width: 2;
+    }
+
+    .ripple {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ripple::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      animation: ripple 0.6s linear;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .logo {
+      position: relative;
+      font-weight: 800;
+    }
+
+    .logo-glow {
+      position: absolute;
+      inset: -5px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      filter: blur(20px);
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    /* Enhanced nav links */
+    .nav-link {
+      position: relative;
+      padding: 0.5rem;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Enhanced social icons */
+    .social-icon {
+      filter: var(--icon-filter);
+      transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+      filter: none;
+      transform: translateY(-2px);
+    }
+
+    /* Glowing stats */
+    .stat-card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1), rgba(var(--secondary-rgb), 0.1));
+      border: 1px solid rgba(var(--primary-rgb), 0.2);
+      box-shadow: 
+        0 4px 15px rgba(var(--primary-rgb), 0.1),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(var(--primary-rgb), 0.3);
+      box-shadow: 
+        0 8px 25px rgba(var(--primary-rgb), 0.2),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      inset: -150%;
+      background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+      transition: transform 0.5s ease;
+      transform: translateX(-100%) skewX(-15deg);
+    }
+
+    .stat-card:hover::before {
+      transform: translateX(100%) skewX(-15deg);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Section animations */
+    section {
+      opacity: 1;
+      transform: translateY(0);
+      transition: transform 0.7s ease;
+    }
+
+    /* Feature cards */
+    .feature-card {
+      transform-style: preserve-3d;
+      transition: all 0.5s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateZ(20px) rotateX(5deg);
+    }
+
+    /* Testimonial cards */
+    .testimonial-card {
+      transition: all 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-5px);
+    }
+
+    /* Enhanced text styles */
+    .hero-text {
+      text-shadow: var(--text-glow);
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    [data-theme="light"] .hero-text {
+      color: #1E293B !important;
+      text-shadow: none;
+      font-weight: 500;
+    }
+    [data-theme="light"] .text-secondary {
+      color: #4B5563 !important;
+    }
+
+    [data-theme="light"] .text-muted {
+      color: #4B5563 !important;
+    }
+
+    [data-theme="light"] .nav-link {
+      color: #1E293B;
+    }
+
+    [data-theme="light"] .nav-button {
+      background: var(--nav-button-bg);
+      color: var(--button-text);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    [data-theme="light"] .nav-button:hover {
+      background: var(--nav-button-hover);
+      transform: translateY(-1px);
+    }
+
+    [data-theme="light"] .sign-up-btn {
+      @apply bg-gradient-to-r from-indigo-600 to-indigo-700 text-white border-0;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    [data-theme="light"] .sign-up-btn:hover {
+      @apply from-indigo-700 to-indigo-800;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    }
+
+    /* Email input styling */
+    .glow-input {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-primary);
+    }
+
+    .glow-input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .glow-input:focus {
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+    }
+
+    [data-theme="light"] .glow-input {
+      background: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: var(--text-primary);
+    }
+
+    [data-theme="light"] .glow-input::placeholder {
+      color: rgba(0, 0, 0, 0.4);
+    }
+
+    /* Custom Cursor */
+    .cursor-follower {
+      display: none;
+    }
+
+    .no-select {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .tool-card {
+      position: relative;
+      overflow: hidden;
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+
+    .tool-card:hover::before {
+      transform: translateX(100%);
+    }
+
+    .nav-button {
+      @apply px-7 py-2.5 rounded-full text-sm transition-all duration-300;
+      background: var(--nav-button-bg);
+      color: var(--button-text);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    .nav-button:hover {
+      background: var(--nav-button-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Sign up button special styling */
+    .sign-up-btn {
+      @apply bg-indigo-600 text-white;
+    }
+
+    .sign-up-btn:hover {
+      @apply bg-indigo-700;
+    }
+  </style>
+  <script>
+    // Sound utilities
+    const ambientSound = new Audio('/assets/sounds/ambient.mp3');
+    ambientSound.loop = true;
+    
+    function playSound(type) {
+      const sound = new Audio(`/assets/sounds/${type}.mp3`);
+      sound.play();
+    }
+
+    function smoothScrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Loading Bar Animation
+    (function() {
+      const bar = document.getElementById('loadingBar');
+      const inner = document.getElementById('loadingBarInner');
+      let progress = 0;
+      let interval = setInterval(() => {
+        progress += Math.random() * 20 + 10;
+        if (progress > 90) progress = 90;
+        inner.style.width = progress + '%';
+      }, 180);
+      window.addEventListener('load', () => {
+        clearInterval(interval);
+        inner.style.width = '100%';
+        setTimeout(() => {
+            setTimeout(() => { bar.style.display = 'none'; }, 400);
+        }, 350);
+      });
+    })();
+
+    // User Info Logic (for displaying name/avatar in nav or anywhere)
+    function getUserInfo() {
+      let user = JSON.parse(localStorage.getItem("sportpulse_user")) || {};
+      if (!user.name && user.email) user.name = user.email.split("@")[0];
+      return user;
+    }
+    function renderUserInfoAnywhere() {
+      const user = getUserInfo();
+      // Example: update nav bar user name/avatar if you have such elements
+      // If you add <span id="navUserName"></span> or <img id="navUserAvatar">
+      // document.getElementById("navUserName").textContent = user.name || "User";
+      // document.getElementById("navUserAvatar").src = user.avatar || "default.png";
+      // You can add similar logic wherever you want to show user info
+    }
+    document.addEventListener("DOMContentLoaded", renderUserInfoAnywhere);
+  </script>
+  <script type="module">
+    import { getUserInfo, updateUserDisplay, handleSignIn } from './js/userInfo.js';
+    
+    // Theme Toggle
+    document.getElementById('themeToggle')?.addEventListener('click', () => {
+        document.documentElement.setAttribute('data-theme',
+            document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light'
+        );
+        playSound('switch');
+    });
+
+    // Form submission
+    document.getElementById('signupForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('emailInput').value;
+        handleSignIn(email);
+    });
+
+    // Initial user check
+    document.addEventListener('DOMContentLoaded', () => {
+        const user = getUserInfo();
+        if (user.name) {
+            document.querySelectorAll('.guest-only').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.user-only').forEach(el => el.classList.remove('hidden'));
+            updateUserDisplay();
+        }
+    });
+</script>
+</head>
+<body class="font-sans no-select" onselectstart="return false;" onmousedown="if(event.detail>1){event.preventDefault();}">
+  <!-- Loading Overlay Animation -->
+  <div id="loaderElement" class="loader"></div>
+  <style>
+    @keyframes pulseAnim {
+      0% { transform: scaleY(1);}
+      20% { transform: scaleY(1.7);}
+      40% { transform: scaleY(1);}
+      60% { transform: scaleY(0.7);}
+      80% { transform: scaleY(1);}
+      100% { transform: scaleY(1);}
+    }
+  </style>
+  <div id="particles"></div>
+  <div class="min-h-screen px-8 py-6 flex flex-col max-w-7xl mx-auto">
+    <!-- Navbar -->
+    <div class="flex justify-between items-center py-6">
+      <div class="relative">
+        <div class="logo">
+          <div class="logo-glow"></div>
+          <span class="text-2xl tracking-tight">Sport<span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">Pulse</span></span>
+        </div>
+      </div>
+      <nav class="hidden md:flex items-center space-x-10">
+        <!-- Use explicit file targets to avoid opening directory listings when clicked locally -->
+        <a href="index.html" class="nav-link hover:text-indigo-400 transition-colors">Home</a>
+  <a href="dashboard.html" class="nav-link hover:text-indigo-400 transition-colors">Dashboard</a>
+  <a href="pages/news.html" class="nav-link hover:text-indigo-400 transition-colors">News</a>
+        <div class="flex items-center space-x-4 ml-4">
+          <!-- Guest View -->
+          <div class="guest-only">
+            <a href="pages/signup.html" class="button-gradient px-6 py-2 rounded-full font-semibold text-white ml-2 transition hover:opacity-90">Sign Up</a>
+          </div>
+          <!-- Logged In View -->
+          <div class="user-only hidden">
+            <div class="flex items-center gap-4">
+              <div data-user-avatar class="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--secondary)] to-[var(--accent)] flex items-center justify-center text-sm font-bold text-white overflow-hidden"></div>
+              <a href="pages/profile.html" class="text-sm font-medium hover:text-indigo-400 transition-colors">
+                <span data-user-name>User</span>
+              </a>
+            </div>
+          </div>
+          <button id="themeToggle" title="Toggle theme" 
+            class="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center gap-2 hover:bg-white/20 transition-all duration-300 text-sm group">
+            <svg class="w-4 h-4 transition-transform group-hover:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+            <span class="opacity-80">Theme</span>
+          </button>
+          <button id="soundToggle" title="Toggle sound" 
+            class="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center gap-2 hover:bg-white/20 transition-all duration-300 text-sm group">
+            <svg class="w-4 h-4 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M6.5 8.5l4-4v15l-4-4H4a1 1 0 01-1-1v-5a1 1 0 011-1h2.5z"/>
+            </svg>
+            <span class="opacity-80">Sound</span>
+          </button>
+        </div> 
+      </nav>
+    </div>
+    <!--dashboard.html-->
+    <!-- Hero Section -->
+    <div class="flex flex-col-reverse md:flex-row items-center justify-between mt-20 gap-16">
+      <!-- Text Block -->
+      <div class="md:w-1/2 space-y-8">
+        <h1 class="text-5xl md:text-6xl font-bold leading-tight tracking-tight">
+          Transform Sports<br>
+          <span class="gradient-text">Analytics & Insights</span><br>
+          <span class="text-4xl md:text-5xl opacity-90">with SportPulse</span>
+        </h1>
+        <p class="hero-text text-lg max-w-xl font-medium leading-relaxed">
+          This SportPulse demo shows real-time match data, predictive AI, and team/player analytics
+          for football, basketball, and cricket, all in one clean dashboard.
+        </p>
+        <div class="flex flex-col max-w-md gap-4">
+          <form id="signupForm" onsubmit="handleSignup(event)" class="space-y-4">
+            <input 
+              type="email" 
+              id="emailInput"
+              required
+              placeholder="Enter your e-mail to get match insights"
+              class="glow-input w-full px-6 py-3.5 rounded-full text-sm focus:outline-none transition-all"
+            />
+            <button type="submit" class="button-gradient w-full px-8 py-3.5 rounded-full text-sm font-medium hover:opacity-90 transition-all ripple group">
+              <span class="flex items-center justify-center gap-2">
+                Explore Insights
+                <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+              </span>
+            </button>
+          </form>
+        </div>
+      </div>
+      <!-- UI Card Mockups -->
+      <div class="md:w-1/2">
+        <div class="card-container grid grid-cols-2 gap-8">
+          <!-- Match Performance Overview Card -->
+          <div class="floating-card rounded-3xl p-8 col-span-2">
+            <h3 class="text-lg font-medium mb-6">Match Performance</h3>
+            <div class="flex items-end justify-between h-40 mb-4 px-2">
+              <div class="w-8 bg-gradient-to-t from-indigo-600 to-blue-400 rounded-t-lg h-[45%] hover:h-[50%] transition-all relative group">
+                <span class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">45%</span>
+              </div>
+              <div class="w-8 bg-gradient-to-t from-indigo-600 to-blue-400 rounded-t-lg h-[65%] hover:h-[70%] transition-all relative group">
+                <span class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">65%</span>
+              </div>
+              <div class="w-8 bg-gradient-to-t from-indigo-600 to-blue-400 rounded-t-lg h-[85%] hover:h-[90%] transition-all relative group">
+                <span class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">85%</span>
+              </div>
+              <div class="w-8 bg-gradient-to-t from-indigo-600 to-blue-400 rounded-t-lg h-[55%] hover:h-[60%] transition-all relative group">
+                <span class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">55%</span>
+              </div>
+              <div class="w-8 bg-gradient-to-t from-indigo-600 to-blue-400 rounded-t-lg h-[75%] hover:h-[80%] transition-all relative group">
+                <span class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">75%</span>
+              </div>
+            </div>
+            <div class="flex justify-between text-sm text-[var(--text-secondary)] px-2">
+              <span>1990</span>
+              <span>1998</span>
+              <span>2003</span>
+              <span>2007</span>
+              <span>2014</span>
+            </div>
+          </div>
+          <!-- Live Match Card -->
+          <div class="floating-card rounded-3xl p-6">
+            <h3 class="text-lg font-medium mb-4">Live Match</h3>
+            <div class="relative w-32 h-32 mx-auto">
+              <svg class="transform rotate-[-90deg]" viewBox="0 0 100 100">
+                <defs>
+                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" class="gradient-start" />
+                    <stop offset="100%" class="gradient-end" />
+                  </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#2a2f4a" stroke-width="10"/>
+                <circle cx="50" cy="50" r="45" fill="none" stroke="url(#gradient)" stroke-width="10"
+                  stroke-dasharray="283" stroke-dashoffset="70"/>
+              </svg>
+              <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl font-bold animate-number">
+                75%
+              </div>
+            </div>
+            <p class="text-[var(--text-secondary)] text-sm text-center mt-4">Live Match Progress</p>
+          </div>
+          <!-- Player Tracking Card -->
+          <div class="floating-card rounded-3xl p-6">
+            <h3 class="text-lg font-medium mb-3">Player Tracking</h3>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-[var(--text-secondary)]">Design</span>
+                <span class="text-sm font-medium">2.5h</span>
+              </div>
+              <div class="h-2 w-full bg-[#2a2f4a]/30 rounded-full">
+                <div class="w-[70%] h-full progress-gradient rounded-full"></div>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm text-[var(--text-secondary)]">Development</span>
+                <span class="text-sm font-medium">4.5h</span>
+              </div>
+              <div class="h-2 w-full bg-[#2a2f4a]/30 rounded-full">
+                <div class="w-[85%] h-full progress-gradient rounded-full"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Team Goals Card -->
+          <div class="floating-card rounded-3xl p-6 col-span-2">
+            <h3 class="text-lg font-medium mb-3">Team Goals</h3>
+            <div class="grid grid-cols-3 gap-4">
+              <div class="stat-card flex items-center space-x-3 bg-[#2a2f4a]/30 p-3 rounded-xl backdrop-blur-sm">
+                <div class="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M5 13l4 4L19 7" stroke="#bfdbfe" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <div class="text-sm">
+                  <div class="font-medium animate-number">15</div>
+                  <div class="text-[var(--text-secondary)]">Matches</div>
+                </div>
+              </div>
+              <div class="stat-card flex items-center space-x-3 bg-[#2a2f4a]/30 p-3 rounded-xl backdrop-blur-sm">
+                <div class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                </div>
+                <div class="text-sm">
+                  <div class="font-medium animate-number">24/7</div>
+                  <div class="text-[var(--text-secondary)]">Updated</div>
+                </div>
+              </div>
+              <div class="stat-card flex items-center space-x-3 bg-[#2a2f4a]/30 p-3 rounded-xl backdrop-blur-sm">
+                <div class="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                  </svg>
+                </div>
+                <div class="text-sm">
+                  <div class="font-medium animate-number">89%</div>
+                  <div class="text-[var(--text-secondary)]">Done</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Premium Features Showcase -->
+    <section class="py-24 theme-transition">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold mb-4">Premium Analytics</h2>
+          <p class="text-[var(--text-muted)] max-w-2xl mx-auto">Advanced analytics, scouting and predictive features for teams and analysts</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Tactical Insights -->
+          <div class="premium-card dashboard-card p-8">
+            <div class="float text-4xl mb-6">
+              <!-- Bar chart SVG -->
+              <svg class="w-10 h-10 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="4" height="10" rx="1" fill="#c7d2fe" />
+                <rect x="9" y="7" width="4" height="14" rx="1" fill="#a78bfa" />
+                <rect x="15" y="3" width="4" height="18" rx="1" fill="#60a5fa" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Tactical Insights</h3>
+            <p class="text-[var(--text-muted)]">In-depth match and team tactics analysis powered by machine learning.</p>
+            <div class="mt-6">
+              <span class="premium-badge">AI Powered</span>
+            </div>
+          </div>
+
+          <!-- AI Predictions -->
+          <div class="premium-card dashboard-card p-8">
+            <div class="float text-4xl mb-6">
+              <!-- AI / spark icon SVG -->
+              <svg class="w-10 h-10 text-indigo-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v6" stroke="#fef3c7" />
+                <path d="M12 16v6" stroke="#fef3c7" />
+                <path d="M4.2 7.8l4.2 2.4" stroke="#fef3c7" />
+                <path d="M15.6 14.8l4.2 2.4" stroke="#fef3c7" />
+                <circle cx="12" cy="11" r="3" fill="#a78bfa" opacity="0.95" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">AI Predictions</h3>
+            <p class="text-[var(--text-muted)]">Probabilistic match outcome and player performance forecasts.</p>
+            <div class="mt-6">
+              <span class="premium-badge">Predictive</span>
+            </div>
+          </div>
+
+          <!-- Scouting Tools -->
+          <div class="premium-card dashboard-card p-8">
+            <div class="float text-4xl mb-6">
+              <!-- Magnifier SVG -->
+              <svg class="w-10 h-10 text-indigo-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="6" fill="#93c5fd" opacity="0.95" />
+                <path d="M21 21l-4.35-4.35" stroke="#c4b5fd" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Scouting Tools</h3>
+            <p class="text-[var(--text-muted)]">Advanced scouting dashboards, player comparison and talent discovery.</p>
+            <div class="mt-6">
+              <span class="premium-badge">Scouting</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Theme Showcase -->
+    <section class="py-24 theme-transition" id="themeShowcase">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-bold mb-4">Visualization Themes</h2>
+          <p class="text-[var(--text-muted)] max-w-2xl mx-auto">Customize your dashboard with sports-focused visual themes</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Ocean Theme -->
+          <div class="premium-card dashboard-card p-8 cursor-pointer" onclick="setTheme('ocean')">
+            <div class="h-32 rounded-lg mb-3 overflow-hidden">
+              <!-- Inline sample SVG for Ocean -->
+              <svg viewBox="0 0 200 80" preserveAspectRatio="none" class="w-full h-full">
+                <defs>
+                  <linearGradient id="oceanGrad" x1="0" x2="1">
+                    <stop offset="0%" stop-color="#2b6cb0" />
+                    <stop offset="100%" stop-color="#63b3ed" />
+                  </linearGradient>
+                </defs>
+                <rect width="200" height="80" fill="#0f1724" />
+                <path d="M0 50 C 30 30, 60 70, 100 50 C 140 30, 170 70, 200 50 L200 80 L0 80 Z" fill="url(#oceanGrad)" opacity="0.95"/>
+              </svg>
+            </div>
+            <span class="inline-block bg-white/10 text-sm text-white/90 px-3 py-1 rounded-full mb-3">Coming Soon</span>
+            <h3 class="text-xl font-bold mb-2">Ocean Theme</h3>
+            <p class="text-[var(--text-muted)]">Calm and focused environment with ocean-inspired colors</p>
+          </div>
+
+          <!-- Sunset Theme -->
+          <div class="premium-card dashboard-card p-8 cursor-pointer" onclick="setTheme('sunset')">
+            <div class="h-32 rounded-lg mb-3 overflow-hidden">
+              <!-- Inline sample SVG for Sunset -->
+              <svg viewBox="0 0 200 80" preserveAspectRatio="none" class="w-full h-full">
+                <rect width="200" height="80" fill="#0f1724" />
+                <defs>
+                  <linearGradient id="sunsetGrad" x1="0" x2="1">
+                    <stop offset="0%" stop-color="#f97316" />
+                    <stop offset="100%" stop-color="#f43f5e" />
+                  </linearGradient>
+                </defs>
+                <rect y="30" width="200" height="50" fill="#1f2937" />
+                <circle cx="100" cy="30" r="18" fill="url(#sunsetGrad)" />
+                <path d="M0 60 C 50 40, 150 80, 200 60 L200 80 L0 80 Z" fill="#111827" opacity="0.6"/>
+              </svg>
+            </div>
+            <span class="inline-block bg-white/10 text-sm text-white/90 px-3 py-1 rounded-full mb-3">Coming Soon</span>
+            <h3 class="text-xl font-bold mb-2">Sunset Theme</h3>
+            <p class="text-[var(--text-muted)]">Warm and energizing palette inspired by dusk</p>
+          </div>
+
+          <!-- Forest Theme -->
+          <div class="premium-card dashboard-card p-8 cursor-pointer" onclick="setTheme('forest')">
+            <div class="h-32 rounded-lg mb-3 overflow-hidden">
+              <!-- Inline sample SVG for Forest -->
+              <svg viewBox="0 0 200 80" preserveAspectRatio="none" class="w-full h-full">
+                <rect width="200" height="80" fill="#0f1724" />
+                <g transform="translate(20,10)" fill="#0b6623">
+                  <ellipse cx="30" cy="50" rx="28" ry="12"/>
+                  <ellipse cx="70" cy="50" rx="28" ry="12"/>
+                  <ellipse cx="110" cy="50" rx="28" ry="12"/>
+                </g>
+                <g transform="translate(20,0)" fill="#1f9d55">
+                  <polygon points="40,10 20,50 60,50"/>
+                  <polygon points="80,8 60,48 100,48"/>
+                  <polygon points="120,12 100,52 140,52"/>
+                </g>
+              </svg>
+            </div>
+            <span class="inline-block bg-white/10 text-sm text-white/90 px-3 py-1 rounded-full mb-3">Coming Soon</span>
+            <h3 class="text-xl font-bold mb-2">Forest Theme</h3>
+            <p class="text-[var(--text-muted)]">Natural and peaceful environment with forest tones</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Features Section -->
+    <section class="py-32 scroll-smooth">
+      <div class="text-center mb-20">
+        <h2 class="text-4xl font-bold mb-4">Core Features</h2>
+        <p class="text-[var(--text-secondary)] max-w-2xl mx-auto">Key modules to power your sports analytics and match preparation.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Live Match Analytics -->
+  <div class="tool-card floating-card rounded-3xl p-8 group">
+          <div class="h-20 w-20 mb-6 mx-auto">
+            <svg class="w-full h-full text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-4 text-center">Live Match Analytics</h3>
+          <p class="text-[var(--text-secondary)] text-center mb-6">Real-time match telemetry and advanced statistical insights.</p>
+          <ul class="text-sm text-[var(--text-secondary)] space-y-2">
+            <li>• Real-time scoring updates</li>
+            <li>• Live performance metrics</li>
+            <li>• Dynamic win probability</li>
+          </ul>
+        </div>
+        <!-- Team Performance -->
+        <div class="tool-card floating-card rounded-3xl p-8 group">
+          <div class="h-20 w-20 mb-6 mx-auto">
+            <svg class="w-full h-full text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-4 text-center">Team Performance</h3>
+          <p class="text-[var(--text-secondary)] text-center mb-6">Comprehensive team analytics and tactical insights.</p>
+          <ul class="text-sm text-[var(--text-secondary)] space-y-2">
+            <li>• Squad analysis</li>
+            <li>• Formation impact</li>
+            <li>• Strategy effectiveness</li>
+          </ul>
+        </div>
+        <!-- Player Stats -->
+        <div class="tool-card floating-card rounded-3xl p-8 group">
+          <div class="h-20 w-20 mb-6 mx-auto">
+            <svg class="w-full h-full text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-4 text-center">Player Stats</h3>
+          <p class="text-[var(--text-secondary)] text-center mb-6">Individual player statistics and performance tracking.</p>
+          <ul class="text-sm text-[var(--text-secondary)] space-y-2">
+            <li>• Career statistics</li>
+            <li>• Performance trends</li>
+            <li>• Comparison tools</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Integration Showcase -->
+      <div class="mt-32">
+        <h2 class="text-4xl font-bold mb-12 text-center">How It All Works Together</h2>
+        <div class="floating-card rounded-3xl p-8">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center space-y-4">
+                <div class="text-2xl font-semibold gradient-text">Match Analysis</div>
+                <p class="text-[var(--text-secondary)]">Deep-dive into match events, player contributions and team strategy</p>
+            </div>
+            <div class="text-center space-y-4">
+                <div class="text-2xl font-semibold gradient-text">Tactical Clarity</div>
+                <p class="text-[var(--text-secondary)]">Visualize tactical patterns and make data-driven decisions</p>
+            </div>
+            <div class="text-center space-y-4">
+                <div class="text-2xl font-semibold gradient-text">Scouting Edge</div>
+                <p class="text-[var(--text-secondary)]">Identify rising talents and compare players across leagues</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- CTA Section -->
+    <section class="py-32 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 backdrop-blur-3xl"></div>
+      <div class="relative max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl font-bold mb-6">Ready to Transform Your Game?</h2>
+  <p class="text-[var(--text-secondary)] mb-10 text-lg">Join SportPulse and unlock pro-grade analytics for your matches.</p>
+        <button onclick="smoothScrollToTop()" class="button-gradient px-12 py-4 rounded-full font-medium text-lg hover:opacity-90 transition-opacity">
+          Get SportPulse Free
+        </button>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer class="mt-20 py-8 border-t border-gray-800">
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+  <div class="text-sm text-[var(--text-secondary)]">© 2025 SportPulse. All rights reserved.</div>
+        <div class="flex space-x-4">
+          <a href="#" class="social-icon opacity-75 hover:opacity-100 transition-all">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons/icons/twitter.svg" alt="Twitter" class="w-6 h-6">
+          </a>
+          <a href="#" class="social-icon opacity-75 hover:opacity-100 transition-all">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons/icons/linkedin.svg" alt="LinkedIn" class="w-6 h-6">
+          </a>
+          <a href="#" class="social-icon opacity-75 hover:opacity-100 transition-all">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons/icons/facebook.svg" alt="Facebook" class="w-6 h-6">
+          </a>
+          <a href="#" class="social-icon opacity-75 hover:opacity-100 transition-all">
+            <img src="https://cdn.jsdelivr.net/npm/simple-icons/icons/instagram.svg" alt="Instagram" class="w-6 h-6">
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.setAttribute('data-theme',
+                document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light'
+            );
+            playSound('switch');
+        });
+
+        // Simplified Sound Toggle
+        const soundToggle = document.getElementById('soundToggle');
+        let isSoundOn = false;
+        soundToggle.addEventListener('click', function() {
+            isSoundOn = !isSoundOn;
+            if (isSoundOn) {
+                ambientSound.volume = 0.5; // Set default volume
+                ambientSound.play();
+                this.classList.add('bg-indigo-600/20');
+            } else {
+                ambientSound.pause();
+                this.classList.remove('bg-indigo-600/20');
+            }
+        });
+
+        // Initialize particles
+        tsParticles.load("particles", {
+          particles: {
+            number: {
+              value: 50,
+              density: {
+                enable: true,
+                value_area: 800
+              }
+            },
+            color: {
+              value: "#6366F1"
+            },
+            opacity: {
+              value: 0.2
+            },
+            size: {
+              value: 3
+            },
+            move: {
+              enable: true,
+              speed: 1,
+              direction: "none",
+              random: true,
+              out_mode: "out"
+            }
+          }
+        });
+    });
+
+  function handleSignup(e) {
+    e.preventDefault();
+    const email = document.getElementById('emailInput').value;
+    localStorage.setItem('userEmail', email);
+  // After sign-up redirect to the hackathon dashboard (SportPulse)
+  // use relative path so it works when hosted from the FloSparc folder
+  window.location.href = 'dashboard.html';
+  }
+
+    // SportPulse Loader Hide on Page Load
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        const loader = document.getElementById('loaderElement');
+        if(loader) {
+          loader.style.opacity = '0';
+          setTimeout(() => loader.style.display = 'none', 400);
+        }
+      }, 700); // keep for at least 700ms for effect
+    });
+  </script>
+</body>
+
+</html>
+
+

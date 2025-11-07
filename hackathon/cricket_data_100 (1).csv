@@ -1,0 +1,101 @@
+match_id,date,team,opponent,player,batted,runs,balls,fours,sixes,strike_rate,bowled,overs,wickets,runs_conceded,economy,catches,result
+CR1000,2023-08-17,Sri Lanka,Australia,Pat Cummins,True,51,116,4,6,43.97,True,6.5,3,55,8.46,3,Sri Lanka
+CR1001,2023-02-21,Pakistan,Australia,Rohit Sharma,True,58,104,3,0,55.77,False,0.0,0,0,0.0,1,Pakistan
+CR1002,2024-07-17,India,West Indies,David Warner,True,60,65,15,3,92.31,False,0.0,0,0,0.0,3,West Indies
+CR1003,2024-05-16,West Indies,Sri Lanka,Steve Smith,True,24,122,2,3,19.67,False,0.0,0,0,0.0,0,West Indies
+CR1004,2024-04-02,India,South Africa,Ben Stokes,True,27,76,1,1,35.53,False,0.0,0,0,0.0,1,Tie
+CR1005,2023-10-13,West Indies,Australia,Mitchell Starc,True,113,126,3,0,89.68,True,5.4,0,47,8.7,1,Australia
+CR1006,2023-07-29,Sri Lanka,Pakistan,Glenn Maxwell,True,102,58,5,6,175.86,False,0.0,0,0,0.0,3,Tie
+CR1007,2023-06-28,Sri Lanka,New Zealand,Ben Stokes,True,124,81,6,4,153.09,False,0.0,0,0,0.0,0,Tie
+CR1008,2025-05-14,India,Australia,Kane Williamson,True,135,87,1,8,155.17,False,0.0,0,0,0.0,0,Australia
+CR1009,2023-03-07,Sri Lanka,India,Pat Cummins,True,10,25,1,1,40.0,True,2.0,5,11,5.5,2,No Result
+CR1010,2023-03-03,England,Sri Lanka,Jos Buttler,True,80,136,2,0,58.82,False,0.0,0,0,0.0,0,England
+CR1011,2023-07-11,Pakistan,New Zealand,Hardik Pandya,True,89,52,7,5,171.15,False,0.0,0,0,0.0,2,Pakistan
+CR1012,2024-03-23,South Africa,Sri Lanka,Rohit Sharma,True,34,84,1,0,40.48,True,1.6,2,11,6.88,2,Sri Lanka
+CR1013,2024-04-21,South Africa,New Zealand,Glenn Maxwell,True,13,29,3,1,44.83,False,0.0,0,0,0.0,1,Tie
+CR1014,2025-10-31,England,Sri Lanka,Glenn Maxwell,True,109,125,0,1,87.2,False,0.0,0,0,0.0,1,England
+CR1015,2023-02-24,New Zealand,South Africa,Babar Azam,True,32,26,4,2,123.08,True,8.0,0,67,8.38,1,South Africa
+CR1016,2024-02-12,Australia,Pakistan,Trent Boult,True,104,131,4,3,79.39,True,9.8,1,82,8.37,0,Pakistan
+CR1017,2025-05-09,New Zealand,West Indies,Pat Cummins,True,63,65,5,1,96.92,False,0.0,0,0,0.0,3,West Indies
+CR1018,2024-03-27,Pakistan,West Indies,Pat Cummins,True,78,144,7,3,54.17,False,0.0,0,0,0.0,2,Tie
+CR1019,2025-07-08,Australia,West Indies,Hardik Pandya,True,130,116,17,5,112.07,True,1.2,2,5,4.17,2,Australia
+CR1020,2024-07-23,Australia,New Zealand,Steve Smith,True,80,95,19,8,84.21,False,0.0,0,0,0.0,1,Tie
+CR1021,2023-01-14,India,Sri Lanka,Steve Smith,False,0,0,0,0,0.0,True,5.4,5,46,8.52,1,Tie
+CR1022,2023-11-23,Sri Lanka,India,Jos Buttler,True,80,124,3,4,64.52,False,0.0,0,0,0.0,2,No Result
+CR1023,2025-05-15,South Africa,New Zealand,Jasprit Bumrah,True,97,134,5,9,72.39,False,0.0,0,0,0.0,0,Tie
+CR1024,2024-11-27,South Africa,Australia,Steve Smith,True,82,100,14,7,82.0,True,5.1,5,24,4.71,0,Tie
+CR1025,2024-07-23,New Zealand,India,Mitchell Starc,True,60,116,9,3,51.72,True,1.5,0,7,4.67,3,New Zealand
+CR1026,2023-11-15,West Indies,Pakistan,Pat Cummins,True,49,115,11,6,42.61,False,0.0,0,0,0.0,0,West Indies
+CR1027,2024-03-16,Sri Lanka,Australia,Jasprit Bumrah,True,132,125,1,8,105.6,False,0.0,0,0,0.0,3,Australia
+CR1028,2024-11-20,West Indies,New Zealand,Babar Azam,True,81,136,14,9,59.56,True,8.9,3,72,8.09,3,New Zealand
+CR1029,2023-07-29,West Indies,Pakistan,Hardik Pandya,True,70,133,16,7,52.63,True,2.7,0,20,7.41,1,Tie
+CR1030,2023-07-09,New Zealand,England,Pat Cummins,True,35,55,3,3,63.64,True,7.1,0,43,6.06,2,No Result
+CR1031,2025-02-17,Sri Lanka,India,KL Rahul,True,99,147,18,0,67.35,True,7.7,3,49,6.36,2,Tie
+CR1032,2023-07-18,Sri Lanka,West Indies,Pat Cummins,True,107,121,17,9,88.43,True,4.9,2,30,6.12,0,No Result
+CR1033,2025-01-05,New Zealand,Sri Lanka,Jos Buttler,True,42,140,2,0,30.0,True,5.9,5,24,4.07,3,Sri Lanka
+CR1034,2024-12-05,West Indies,Australia,Virat Kohli,True,83,68,14,5,122.06,False,0.0,0,0,0.0,2,No Result
+CR1035,2024-06-25,South Africa,West Indies,Rohit Sharma,True,138,75,11,3,184.0,True,7.8,5,32,4.1,0,West Indies
+CR1036,2023-03-30,Pakistan,West Indies,Virat Kohli,True,61,46,15,10,132.61,False,0.0,0,0,0.0,3,Tie
+CR1037,2025-07-29,New Zealand,Australia,Kane Williamson,True,29,55,4,0,52.73,False,0.0,0,0,0.0,3,No Result
+CR1038,2023-09-13,Pakistan,India,Kane Williamson,True,62,44,9,10,140.91,True,1.2,4,9,7.5,2,No Result
+CR1039,2025-02-14,New Zealand,India,Babar Azam,True,3,108,0,0,2.78,False,0.0,0,0,0.0,3,India
+CR1040,2023-06-11,Sri Lanka,Australia,Ben Stokes,True,69,112,17,7,61.61,False,0.0,0,0,0.0,2,Tie
+CR1041,2024-08-23,Pakistan,West Indies,Pat Cummins,True,115,88,14,9,130.68,True,3.8,0,24,6.32,2,West Indies
+CR1042,2025-01-10,West Indies,Australia,David Warner,True,87,78,19,4,111.54,False,0.0,0,0,0.0,1,West Indies
+CR1043,2024-01-29,Pakistan,Sri Lanka,Steve Smith,True,61,118,15,10,51.69,True,4.5,0,20,4.44,1,No Result
+CR1044,2023-05-23,Pakistan,England,Jos Buttler,True,121,130,16,5,93.08,False,0.0,0,0,0.0,2,Tie
+CR1045,2023-04-04,West Indies,England,Hardik Pandya,True,30,64,5,0,46.88,True,9.5,5,46,4.84,1,No Result
+CR1046,2024-04-11,South Africa,Sri Lanka,Kane Williamson,True,134,143,9,1,93.71,True,3.0,2,14,4.67,0,Sri Lanka
+CR1047,2024-08-15,South Africa,India,Virat Kohli,True,32,141,1,0,22.7,False,0.0,0,0,0.0,3,Tie
+CR1048,2023-06-13,England,India,Hardik Pandya,True,122,75,2,6,162.67,False,0.0,0,0,0.0,0,India
+CR1049,2024-04-21,England,West Indies,Kane Williamson,True,21,73,0,3,28.77,True,7.9,1,62,7.85,3,No Result
+CR1050,2023-07-26,West Indies,England,Mitchell Starc,True,109,93,18,9,117.2,False,0.0,0,0,0.0,0,England
+CR1051,2025-02-17,Pakistan,England,Jos Buttler,True,61,52,2,2,117.31,False,0.0,0,0,0.0,3,Tie
+CR1052,2024-07-23,India,England,Hardik Pandya,True,116,67,7,4,173.13,True,6.3,5,50,7.94,1,No Result
+CR1053,2025-07-17,Australia,New Zealand,KL Rahul,True,68,139,4,1,48.92,False,0.0,0,0,0.0,2,No Result
+CR1054,2025-01-17,Australia,South Africa,Ben Stokes,True,103,85,16,8,121.18,False,0.0,0,0,0.0,0,No Result
+CR1055,2023-11-30,New Zealand,South Africa,Hardik Pandya,False,0,0,0,0,0.0,False,0.0,0,0,0.0,0,Tie
+CR1056,2025-01-28,India,West Indies,Trent Boult,True,132,149,14,4,88.59,False,0.0,0,0,0.0,3,India
+CR1057,2024-12-28,West Indies,England,Steve Smith,True,26,54,2,3,48.15,True,2.9,3,23,7.93,0,No Result
+CR1058,2024-03-05,Australia,Pakistan,Hardik Pandya,True,103,116,0,10,88.79,True,4.6,0,22,4.78,2,No Result
+CR1059,2024-06-30,West Indies,Sri Lanka,Virat Kohli,True,140,86,9,7,162.79,True,4.8,0,42,8.75,1,Sri Lanka
+CR1060,2023-05-27,South Africa,New Zealand,Virat Kohli,True,23,68,0,3,33.82,True,6.5,1,42,6.46,2,Tie
+CR1061,2023-12-17,Sri Lanka,West Indies,Glenn Maxwell,True,62,89,4,6,69.66,False,0.0,0,0,0.0,1,Sri Lanka
+CR1062,2025-12-29,South Africa,West Indies,Trent Boult,True,87,143,16,4,60.84,True,2.8,2,22,7.86,3,West Indies
+CR1063,2024-05-16,West Indies,South Africa,Glenn Maxwell,True,139,117,14,5,118.8,True,9.8,1,67,6.84,1,No Result
+CR1064,2023-12-01,India,Pakistan,Ben Stokes,True,97,97,20,2,100.0,False,0.0,0,0,0.0,2,India
+CR1065,2025-08-04,West Indies,India,Babar Azam,True,3,37,0,0,8.11,False,0.0,0,0,0.0,2,Tie
+CR1066,2025-02-16,Sri Lanka,New Zealand,Rohit Sharma,True,136,116,10,10,117.24,True,7.6,4,31,4.08,0,New Zealand
+CR1067,2024-07-06,South Africa,Australia,Ben Stokes,True,25,37,3,1,67.57,True,9.0,0,50,5.56,0,Tie
+CR1068,2024-03-25,New Zealand,England,Steve Smith,True,135,119,18,10,113.45,True,1.7,0,11,6.47,3,England
+CR1069,2024-10-26,West Indies,South Africa,Jasprit Bumrah,True,65,90,8,10,72.22,False,0.0,0,0,0.0,2,South Africa
+CR1070,2023-04-25,Australia,South Africa,David Warner,True,76,119,13,4,63.87,False,0.0,0,0,0.0,3,No Result
+CR1071,2024-04-14,Australia,England,Steve Smith,True,75,126,9,0,59.52,True,6.6,2,26,3.94,0,No Result
+CR1072,2023-03-07,South Africa,West Indies,Trent Boult,True,90,73,20,3,123.29,True,6.8,5,53,7.79,1,South Africa
+CR1073,2024-10-08,India,Pakistan,Trent Boult,True,93,139,4,1,66.91,True,3.3,3,16,4.85,1,Tie
+CR1074,2025-04-01,South Africa,West Indies,Jasprit Bumrah,True,123,98,10,1,125.51,False,0.0,0,0,0.0,1,No Result
+CR1075,2024-07-02,New Zealand,India,Trent Boult,True,67,101,3,7,66.34,False,0.0,0,0,0.0,2,No Result
+CR1076,2023-05-16,New Zealand,India,Jos Buttler,True,6,146,1,0,4.11,True,6.4,3,54,8.44,2,No Result
+CR1077,2024-03-08,Australia,England,Virat Kohli,True,77,101,3,1,76.24,False,0.0,0,0,0.0,3,No Result
+CR1078,2024-10-06,New Zealand,Sri Lanka,Ben Stokes,True,138,122,18,2,113.11,True,6.5,3,46,7.08,2,New Zealand
+CR1079,2024-03-11,New Zealand,Australia,Glenn Maxwell,True,60,139,11,1,43.17,True,3.7,5,21,5.68,3,Tie
+CR1080,2025-10-19,Pakistan,India,Mitchell Starc,True,23,65,5,0,35.38,False,0.0,0,0,0.0,1,India
+CR1081,2025-03-21,Australia,West Indies,Trent Boult,True,55,131,13,3,41.98,False,0.0,0,0,0.0,0,Tie
+CR1082,2025-07-28,England,Australia,Babar Azam,True,44,50,10,0,88.0,False,0.0,0,0,0.0,1,Tie
+CR1083,2023-10-20,India,England,Hardik Pandya,True,107,120,3,1,89.17,False,0.0,0,0,0.0,0,No Result
+CR1084,2024-06-26,Pakistan,New Zealand,Virat Kohli,True,133,104,14,10,127.88,True,0.6,3,4,6.67,3,Pakistan
+CR1085,2023-10-13,West Indies,New Zealand,Pat Cummins,True,20,92,4,1,21.74,False,0.0,0,0,0.0,2,No Result
+CR1086,2024-05-20,South Africa,Pakistan,Babar Azam,True,25,41,6,4,60.98,True,2.2,3,18,8.18,3,Tie
+CR1087,2024-06-22,West Indies,Pakistan,Steve Smith,True,80,94,10,10,85.11,False,0.0,0,0,0.0,3,West Indies
+CR1088,2025-05-27,Australia,West Indies,Rohit Sharma,True,24,107,6,1,22.43,False,0.0,0,0,0.0,2,Australia
+CR1089,2025-03-28,Sri Lanka,England,Mitchell Starc,True,108,146,1,4,73.97,True,3.5,4,22,6.29,1,No Result
+CR1090,2025-01-11,Pakistan,West Indies,Rohit Sharma,True,94,61,8,9,154.1,False,0.0,0,0,0.0,0,Tie
+CR1091,2024-03-25,India,England,Hardik Pandya,True,79,82,11,0,96.34,False,0.0,0,0,0.0,3,India
+CR1092,2023-10-11,England,Sri Lanka,Jos Buttler,True,23,146,1,3,15.75,False,0.0,0,0,0.0,2,Tie
+CR1093,2025-11-09,New Zealand,West Indies,Kane Williamson,True,13,45,1,2,28.89,False,0.0,0,0,0.0,3,No Result
+CR1094,2025-10-07,West Indies,South Africa,Glenn Maxwell,True,55,123,8,1,44.72,False,0.0,0,0,0.0,3,Tie
+CR1095,2023-07-06,India,England,Steve Smith,True,14,8,1,1,175.0,True,7.7,2,41,5.32,0,India
+CR1096,2023-04-07,West Indies,New Zealand,Steve Smith,True,97,116,7,8,83.62,False,0.0,0,0,0.0,2,West Indies
+CR1097,2023-08-13,Sri Lanka,West Indies,Ben Stokes,False,0,0,0,0,0.0,False,0.0,0,0,0.0,2,No Result
+CR1098,2023-11-10,Sri Lanka,New Zealand,Jos Buttler,True,29,117,0,2,24.79,False,0.0,0,0,0.0,3,Tie
+CR1099,2023-11-24,Australia,South Africa,Mitchell Starc,True,111,130,12,8,85.38,False,0.0,0,0,0.0,2,South Africa

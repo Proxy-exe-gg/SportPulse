@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportPulse - Cricket Dashboard</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #23235b;
+            --secondary: #4C6FFF;
+            --accent: #8A5CFF;
+            --bg: linear-gradient(135deg, #181A3D 0%, #23235b 100%);
+            --card-bg: rgba(30, 34, 70, 0.55);
+            --sidebar-bg: rgba(24, 26, 61, 0.85);
+            --text-main: #fff;
+            --text-muted: #a0a3c4;
+            --glass-blur: blur(18px);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-bar {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: var(--glass-blur);
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(76,111,255,0.2);
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, rgba(76,111,255,0.1), rgba(138,92,255,0.1));
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(76,111,255,0.2);
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div id="particles"></div>
+    <div class="max-w-7xl mx-auto">
+        <!-- Navbar (copied from index for consistent layout) -->
+        <div class="flex justify-between items-center py-6">
+            <div class="relative">
+                <div class="logo">
+                    <div class="logo-glow"></div>
+                    <span class="text-2xl tracking-tight">Sport<span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">Pulse</span></span>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-10">
+                <a href="../index.html" class="nav-link hover:text-indigo-400 transition-colors">Home</a>
+                <a href="../dashboard.html" class="nav-link hover:text-indigo-400 transition-colors">Dashboard</a>
+                <a href="news.html" class="nav-link hover:text-indigo-400 transition-colors">News</a>
+                <div class="flex items-center space-x-4 ml-4">
+                    <button id="themeToggle" title="Toggle theme" class="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center gap-2 hover:bg-white/20 transition-all duration-300 text-sm group">
+                        <svg class="w-4 h-4 transition-transform group-hover:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                        <span class="opacity-80">Theme</span>
+                    </button>
+                    <button id="soundToggle" title="Toggle sound" class="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center gap-2 hover:bg-white/20 transition-all duration-300 text-sm group">
+                        <svg class="w-4 h-4 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M6.5 8.5l4-4v15l-4-4H4a1 1 0 01-1-1v-5a1 1 0 011-1h2.5z"/>
+                        </svg>
+                        <span class="opacity-80">Sound</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mb-8">
+            <a href="../dashboard.html" class="back-button flex items-center gap-2 bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] p-2 rounded-lg text-white hover:shadow-lg transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Back to Dashboard
+            </a>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] bg-clip-text text-transparent">
+                Cricket Dashboard
+            </h1>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="mb-8">
+            <input type="text" id="playerSearch" placeholder="Search for players, teams, or matches..." 
+                   class="w-full p-4 rounded-xl search-bar text-white">
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-2">Top Performers</h3>
+                <div id="topPerformers" class="space-y-2"></div>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-2">Recent Results</h3>
+                <div id="recentResults" class="space-y-2"></div>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-2">Upcoming Matches</h3>
+                <div id="upcomingMatches" class="space-y-2">
+                    <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                        <p class="font-medium">India vs Australia</p>
+                        <p class="text-sm text-[var(--text-muted)]">Nov 15, 2025</p>
+                    </div>
+                    <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                        <p class="font-medium">England vs South Africa</p>
+                        <p class="text-sm text-[var(--text-muted)]">Nov 20, 2025</p>
+                    </div>
+                    <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                        <p class="font-medium">Pakistan vs Sri Lanka</p>
+                        <p class="text-sm text-[var(--text-muted)]">Nov 25, 2025</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Prediction Panel -->
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-2">Prediction</h3>
+                <div id="predictionPanel" class="space-y-2">
+                    <p class="text-sm text-[var(--text-muted)]">Click to compute simple predicted wins for teams based on current win rate.</p>
+                    <button id="computePredictions" class="mt-2 px-4 py-2 rounded bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] hover:translate-y-[-2px] transition-transform text-white">Show Predictions</button>
+                    <div id="predictionsResult" class="mt-3 text-sm"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Visualization -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-4">Team Performance</h3>
+                <canvas id="teamPerformanceChart"></canvas>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-4">Player Statistics</h3>
+                <canvas id="playerStatsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Detailed Stats -->
+        <div class="dashboard-card p-6">
+            <h3 class="text-lg font-medium mb-4">Match History</h3>
+            <h4 class="text-sm text-[var(--text-muted)] mb-3">Raw data preview (first 10 rows)</h4>
+            <div class="overflow-x-auto mb-4">
+                <table id="dataPreview" class="w-full text-sm"></table>
+            </div>
+            <div class="overflow-x-auto">
+                <table id="matchHistoryTable" class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th class="p-2 text-left">Date</th>
+                            <th class="p-2 text-left">Teams</th>
+                            <th class="p-2 text-left">Result</th>
+                            <th class="p-2 text-left">Top Scorer</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matchHistoryBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize particles like landing page
+        if (window.tsParticles) {
+            try { tsParticles.load("particles", { particles: { number: { value: 40 }, color: { value: "#6366F1" }, opacity: { value: 0.18 }, size: { value: 3 }, move: { enable: true, speed: 1 } } }); } catch(e) { console.warn('tsParticles init failed', e); }
+        }
+
+        // Add hover effect for buttons globally
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('button, .back-button, .nav-link, .sidebar-link').forEach(el => {
+                el.classList.add('transition','duration-200');
+                el.addEventListener('mouseover', () => el.style.transform = 'translateY(-3px)');
+                el.addEventListener('mouseout', () => el.style.transform = '');
+            });
+        });
+        // Load and process cricket data
+        async function loadCricketData() {
+            try {
+                const response = await fetch('../../cricket_data_100 (1).csv');
+                const data = await response.text();
+                const rows = data.split('\\n').slice(1); // Skip header
+                const matches = rows.map(row => {
+                    const cols = row.split(',');
+                    return {
+                        match_id: cols[0],
+                        date: new Date(cols[1]),
+                        team: cols[2],
+                        opponent: cols[3],
+                        player: cols[4],
+                        runs: parseInt(cols[6]),
+                        wickets: parseInt(cols[8]),
+                        result: cols[12]
+                    };
+                });
+
+                // If parsing produced no matches (fetch failed or file empty), use sample data for prototype/demo
+                if (!matches || matches.length === 0 || isNaN(matches[0].date)) {
+                    const sampleMatches = [
+                        { match_id: 's1', date: new Date('2025-11-01'), team: 'India', opponent: 'Australia', player: 'Virat Kohli', runs: 85, wickets: 0, result: 'India' },
+                        { match_id: 's2', date: new Date('2025-10-28'), team: 'England', opponent: 'South Africa', player: 'Joe Root', runs: 72, wickets: 1, result: 'England' },
+                        { match_id: 's3', date: new Date('2025-10-20'), team: 'Pakistan', opponent: 'Sri Lanka', player: 'Babar Azam', runs: 89, wickets: 0, result: 'Pakistan' },
+                        { match_id: 's4', date: new Date('2025-10-15'), team: 'Australia', opponent: 'New Zealand', player: 'Steve Smith', runs: 92, wickets: 0, result: 'Australia' },
+                        { match_id: 's5', date: new Date('2025-10-10'), team: 'India', opponent: 'England', player: 'Rohit Sharma', runs: 103, wickets: 0, result: 'India' },
+                        { match_id: 's6', date: new Date('2025-10-05'), team: 'South Africa', opponent: 'Pakistan', player: 'Quinton de Kock', runs: 76, wickets: 0, result: 'South Africa' },
+                        { match_id: 's7', date: new Date('2025-10-01'), team: 'Australia', opponent: 'India', player: 'David Warner', runs: 65, wickets: 0, result: 'Australia' },
+                        { match_id: 's8', date: new Date('2025-09-28'), team: 'New Zealand', opponent: 'England', player: 'Kane Williamson', runs: 88, wickets: 0, result: 'New Zealand' },
+                        { match_id: 's9', date: new Date('2025-09-25'), team: 'Sri Lanka', opponent: 'South Africa', player: 'Kusal Mendis', runs: 71, wickets: 0, result: 'Sri Lanka' },
+                        { match_id: 's10', date: new Date('2025-09-20'), team: 'India', opponent: 'Pakistan', player: 'Virat Kohli', runs: 112, wickets: 0, result: 'India' }
+                    ];
+                    updateDashboard(sampleMatches);
+                    attachPredictionHandler(sampleMatches);
+                } else {
+                    updateDashboard(matches);
+                    attachPredictionHandler(matches);
+                }
+            } catch (error) {
+                console.error('Error loading cricket data:', error);
+                // use sample data on fetch error
+                const sampleMatches = [
+                    { match_id: 's1', date: new Date('2025-11-01'), team: 'India', opponent: 'Australia', player: 'Player A', runs: 85, wickets: 0, result: 'India' },
+                    { match_id: 's2', date: new Date('2025-10-28'), team: 'England', opponent: 'South Africa', player: 'Player B', runs: 72, wickets: 1, result: 'England' },
+                    { match_id: 's3', date: new Date('2025-10-20'), team: 'Pakistan', opponent: 'Sri Lanka', player: 'Player C', runs: 45, wickets: 2, result: 'Pakistan' }
+                ];
+                updateDashboard(sampleMatches);
+                attachPredictionHandler(sampleMatches);
+            }
+        }
+
+        function attachPredictionHandler(matches) {
+            const btn = document.getElementById('computePredictions');
+            if (!btn) return;
+            btn.onclick = () => {
+                const preds = computePredictions(matches);
+                const el = document.getElementById('predictionsResult');
+                el.innerHTML = Object.entries(preds).map(([team, wins]) => `<div class="p-2 rounded bg-opacity-10 bg-white/5">${team}: <strong>${wins} predicted wins</strong></div>`).join('');
+            };
+        }
+
+        // Simple prediction: use current win rate * assumed remaining games (10)
+        function computePredictions(matches) {
+            const teamResults = {};
+            matches.forEach(m => {
+                teamResults[m.team] = teamResults[m.team] || { played: 0, wins: 0 };
+                teamResults[m.team].played++;
+                if (m.result === m.team) teamResults[m.team].wins++;
+            });
+            const remaining = 10;
+            const preds = {};
+            Object.entries(teamResults).forEach(([team, stats]) => {
+                const winRate = stats.played ? (stats.wins / stats.played) : 0.5;
+                preds[team] = Math.round(winRate * remaining);
+            });
+            return preds;
+        }
+
+        function showDataPreview(matches) {
+            const table = document.getElementById('dataPreview');
+            if (!table) return;
+            const rows = matches.slice(0, 10);
+            table.innerHTML = `
+                <thead>
+                    <tr class="text-left text-xs text-[var(--text-muted)]">
+                        <th class="p-2">Date</th>
+                        <th class="p-2">Teams</th>
+                        <th class="p-2">Player</th>
+                        <th class="p-2">Runs</th>
+                        <th class="p-2">Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rows.map(r => `
+                        <tr class="border-b border-gray-700">
+                            <td class="p-2">${r.date.toLocaleDateString()}</td>
+                            <td class="p-2">${r.team} vs ${r.opponent}</td>
+                            <td class="p-2">${r.player}</td>
+                            <td class="p-2">${isNaN(r.runs)?'-':r.runs}</td>
+                            <td class="p-2">${r.result}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+        }
+
+        function updateDashboard(matches) {
+            // Update top performers
+            const topPerformers = document.getElementById('topPerformers');
+            const performers = getTopPerformers(matches);
+            topPerformers.innerHTML = performers.map(p => `
+                <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                    <p class="font-medium">${p.player}</p>
+                    <p class="text-sm text-[var--text-muted]">${p.runs} runs</p>
+                </div>
+            `).join('');
+
+            // Update recent results
+            const recentResults = document.getElementById('recentResults');
+            const results = getRecentResults(matches);
+            recentResults.innerHTML = results.map(r => `
+                <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                    <p class="font-medium">${r.team} vs ${r.opponent}</p>
+                    <p class="text-sm text-[var--text-muted]">${r.result}</p>
+                </div>
+            `).join('');
+
+            // Update match history table
+            updateMatchHistory(matches);
+
+            // Create charts
+            createTeamPerformanceChart(matches);
+            createPlayerStatsChart(matches);
+            showDataPreview(matches);
+        }
+
+        function getTopPerformers(matches) {
+            const playerStats = {};
+            matches.forEach(match => {
+                if (!playerStats[match.player]) {
+                    playerStats[match.player] = { runs: 0, matches: 0 };
+                }
+                playerStats[match.player].runs += match.runs;
+                playerStats[match.player].matches++;
+            });
+
+            return Object.entries(playerStats)
+                .map(([player, stats]) => ({
+                    player,
+                    runs: stats.runs,
+                    average: stats.runs / stats.matches
+                }))
+                .sort((a, b) => b.runs - a.runs)
+                .slice(0, 3);
+        }
+
+        function getRecentResults(matches) {
+            return matches
+                .sort((a, b) => b.date - a.date)
+                .slice(0, 3)
+                .map(match => ({
+                    team: match.team,
+                    opponent: match.opponent,
+                    result: match.result
+                }));
+        }
+
+        function updateMatchHistory(matches) {
+            const tbody = document.getElementById('matchHistoryBody');
+            const recentMatches = matches
+                .sort((a, b) => b.date - a.date)
+                .slice(0, 10);
+
+            tbody.innerHTML = recentMatches.map(match => `
+                <tr class="border-b border-gray-700">
+                    <td class="p-2">${match.date.toLocaleDateString()}</td>
+                    <td class="p-2">${match.team} vs ${match.opponent}</td>
+                    <td class="p-2">${match.result}</td>
+                    <td class="p-2">${match.player} (${match.runs} runs)</td>
+                </tr>
+            `).join('');
+        }
+
+        function createTeamPerformanceChart(matches) {
+            const teamResults = {};
+            matches.forEach(match => {
+                if (!teamResults[match.team]) {
+                    teamResults[match.team] = { wins: 0, losses: 0, ties: 0 };
+                }
+                if (match.result === match.team) {
+                    teamResults[match.team].wins++;
+                } else if (match.result === 'Tie') {
+                    teamResults[match.team].ties++;
+                } else {
+                    teamResults[match.team].losses++;
+                }
+            });
+
+            const ctx = document.getElementById('teamPerformanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(teamResults),
+                    datasets: [{
+                        label: 'Wins',
+                        data: Object.values(teamResults).map(r => r.wins),
+                        backgroundColor: 'rgba(76,111,255,0.5)'
+                    }, {
+                        label: 'Losses',
+                        data: Object.values(teamResults).map(r => r.losses),
+                        backgroundColor: 'rgba(255,76,76,0.5)'
+                    }, {
+                        label: 'Ties',
+                        data: Object.values(teamResults).map(r => r.ties),
+                        backgroundColor: 'rgba(76,255,76,0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    },
+                    plugins: {
+                        legend: { position: 'top' }
+                    }
+                }
+            });
+        }
+
+        function createPlayerStatsChart(matches) {
+            const playerStats = {};
+            matches.forEach(match => {
+                if (!playerStats[match.player]) {
+                    playerStats[match.player] = { runs: 0, matches: 0 };
+                }
+                playerStats[match.player].runs += match.runs;
+                playerStats[match.player].matches++;
+            });
+
+            const topPlayers = Object.entries(playerStats)
+                .sort((a, b) => b[1].runs - a[1].runs)
+                .slice(0, 5);
+
+            const ctx = document.getElementById('playerStatsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: topPlayers.map(p => p[0]),
+                    datasets: [{
+                        label: 'Total Runs',
+                        data: topPlayers.map(p => p[1].runs),
+                        backgroundColor: 'rgba(76,111,255,0.2)',
+                        borderColor: 'rgba(76,111,255,1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        r: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        // Initialize search functionality
+        document.getElementById('playerSearch').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            // Implement search logic here
+        });
+
+        // Load data when page loads
+        loadCricketData();
+    </script>
+</body>
+</html>

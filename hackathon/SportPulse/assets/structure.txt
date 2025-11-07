@@ -1,0 +1,10 @@
+/assets
+  /sounds
+    - ambient.mp3
+    - switch.mp3
+  /images
+    - default-avatar.png
+    - logo.svg
+  /lottie
+    - loading.json
+    - success.json

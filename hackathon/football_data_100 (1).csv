@@ -1,0 +1,101 @@
+match_id,date,league,home_team,away_team,home_goals,away_goals,attendance,possession_home,shots_home,shots_away,top_scorer,outcome
+FB2000,2024-11-13,Serie A,Manchester City,PSG,6,2,51342,41,19,4,Lewandowski,Home Win
+FB2001,2023-12-11,Premier League,Barcelona,Arsenal,3,4,24656,62,5,8,Vinicius Jr,Away Win
+FB2002,2023-06-06,Serie A,Manchester City,Juventus,0,3,47899,58,10,13,Player B,Away Win
+FB2003,2025-11-11,Serie A,Liverpool,Manchester City,2,0,69996,56,7,5,Player A,Home Win
+FB2004,2023-08-22,Serie A,Juventus,Barcelona,6,5,45743,63,3,3,Player A,Home Win
+FB2005,2025-12-22,Serie A,Liverpool,Barcelona,4,5,54903,68,16,4,Lewandowski,Away Win
+FB2006,2025-11-10,La Liga,Chelsea,Real Madrid,0,1,42513,64,5,4,Vinicius Jr,Away Win
+FB2007,2024-02-02,Ligue 1,PSG,Manchester City,5,4,52686,50,7,10,Mbappe,Home Win
+FB2008,2024-12-16,Premier League,Atletico Madrid,Arsenal,1,4,42300,46,5,17,Benzema,Away Win
+FB2009,2024-12-20,Premier League,PSG,Atletico Madrid,4,6,79771,67,20,1,Mbappe,Away Win
+FB2010,2023-10-30,Bundesliga,Manchester City,Juventus,2,2,63976,36,14,3,Benzema,Draw
+FB2011,2024-04-28,La Liga,Real Madrid,Bayern Munich,1,0,38088,69,13,6,Vinicius Jr,Home Win
+FB2012,2023-07-30,Eredivisie,Juventus,Barcelona,6,1,19135,64,4,10,Haaland,Home Win
+FB2013,2023-10-27,Premier League,Liverpool,Manchester City,2,2,48776,60,20,16,Lewandowski,Draw
+FB2014,2024-06-08,Premier League,Liverpool,Arsenal,2,6,66173,38,13,9,Player B,Away Win
+FB2015,2024-02-09,Serie A,Bayern Munich,Juventus,5,3,73630,59,13,6,Vinicius Jr,Home Win
+FB2016,2023-12-22,Eredivisie,Juventus,Arsenal,6,4,32479,40,16,3,Mbappe,Home Win
+FB2017,2023-11-10,Ligue 1,Barcelona,Atletico Madrid,2,2,21723,40,13,10,Lewandowski,Draw
+FB2018,2023-06-04,Bundesliga,Atletico Madrid,Bayern Munich,1,5,44091,57,17,2,Benzema,Away Win
+FB2019,2023-12-29,Ligue 1,Bayern Munich,Chelsea,5,6,77121,38,5,13,Benzema,Away Win
+FB2020,2025-10-08,Ligue 1,Barcelona,Manchester City,1,6,54817,63,4,5,Player B,Away Win
+FB2021,2025-08-08,La Liga,Arsenal,Bayern Munich,3,4,17122,44,17,12,Benzema,Away Win
+FB2022,2025-07-08,Bundesliga,Real Madrid,Liverpool,4,2,41085,55,11,8,Player B,Home Win
+FB2023,2024-10-23,Premier League,Barcelona,PSG,4,3,74869,70,6,9,Lewandowski,Home Win
+FB2024,2024-10-09,Eredivisie,Juventus,Liverpool,4,2,60480,66,9,4,Player C,Home Win
+FB2025,2023-11-06,Premier League,Juventus,Barcelona,5,3,20753,55,14,3,Rashford,Home Win
+FB2026,2025-06-19,Ligue 1,Chelsea,Arsenal,6,1,61649,46,14,17,Haaland,Home Win
+FB2027,2023-05-20,Premier League,Liverpool,Barcelona,1,6,47376,36,14,18,Benzema,Away Win
+FB2028,2025-08-18,Bundesliga,PSG,Barcelona,4,0,19308,54,15,16,Rashford,Home Win
+FB2029,2025-06-24,Bundesliga,Bayern Munich,Real Madrid,1,2,57096,39,17,15,Rashford,Away Win
+FB2030,2024-09-12,Serie A,Barcelona,Atletico Madrid,5,4,26925,43,16,17,Player A,Home Win
+FB2031,2024-07-16,Premier League,PSG,Barcelona,2,1,25614,55,10,12,Rashford,Home Win
+FB2032,2023-04-26,Serie A,Real Madrid,Arsenal,1,5,77675,70,11,5,Lewandowski,Away Win
+FB2033,2024-12-21,Ligue 1,PSG,Real Madrid,4,5,26051,44,8,11,Player A,Away Win
+FB2034,2025-11-05,Premier League,Real Madrid,Manchester City,5,6,52799,51,9,14,Player A,Away Win
+FB2035,2023-06-01,Bundesliga,PSG,Chelsea,5,2,46650,50,15,10,Vinicius Jr,Home Win
+FB2036,2024-09-27,Premier League,Manchester City,Liverpool,3,3,46735,64,9,11,Player C,Draw
+FB2037,2025-08-03,Serie A,Arsenal,Bayern Munich,3,1,64850,58,19,18,Player B,Home Win
+FB2038,2025-07-14,Serie A,Liverpool,PSG,0,2,44464,50,7,4,Player A,Away Win
+FB2039,2023-03-19,Serie A,Bayern Munich,Juventus,1,6,74133,45,13,11,Haaland,Away Win
+FB2040,2023-04-27,La Liga,Juventus,Atletico Madrid,3,3,72611,54,18,1,Player B,Draw
+FB2041,2025-01-25,Bundesliga,PSG,Juventus,1,1,53230,57,4,2,Lewandowski,Draw
+FB2042,2024-08-10,Bundesliga,Atletico Madrid,Juventus,2,4,15535,41,16,5,Lewandowski,Away Win
+FB2043,2023-06-07,Eredivisie,Arsenal,Juventus,2,0,41252,38,20,7,Benzema,Home Win
+FB2044,2023-07-04,Ligue 1,Chelsea,Real Madrid,3,4,44514,70,11,4,Player C,Away Win
+FB2045,2025-11-04,Premier League,Bayern Munich,Arsenal,6,2,51558,58,7,7,Rashford,Home Win
+FB2046,2025-02-26,Bundesliga,PSG,Manchester City,0,0,23980,56,18,17,Vinicius Jr,Draw
+FB2047,2025-08-05,La Liga,Atletico Madrid,PSG,1,2,76038,55,8,13,Lewandowski,Away Win
+FB2048,2023-03-26,Ligue 1,Arsenal,Atletico Madrid,6,4,49887,66,12,16,Player A,Home Win
+FB2049,2025-07-10,Serie A,Arsenal,Real Madrid,3,4,35163,36,18,9,Haaland,Away Win
+FB2050,2024-01-21,Eredivisie,Manchester City,PSG,1,4,56223,59,7,8,Player A,Away Win
+FB2051,2024-10-20,Ligue 1,Real Madrid,Chelsea,0,3,35558,61,7,14,Haaland,Away Win
+FB2052,2025-09-01,Bundesliga,PSG,Juventus,6,6,63223,38,7,17,Haaland,Draw
+FB2053,2025-10-23,Ligue 1,Arsenal,PSG,4,3,35562,46,17,18,Benzema,Home Win
+FB2054,2023-11-05,Ligue 1,Arsenal,Chelsea,4,3,27600,50,11,18,Lewandowski,Home Win
+FB2055,2023-05-07,La Liga,Chelsea,Arsenal,5,1,60235,66,13,16,Benzema,Home Win
+FB2056,2025-07-11,Ligue 1,Chelsea,Arsenal,0,4,59343,69,15,13,Benzema,Away Win
+FB2057,2023-07-31,La Liga,Chelsea,Manchester City,2,5,20179,57,17,9,Vinicius Jr,Away Win
+FB2058,2024-12-04,La Liga,Liverpool,Atletico Madrid,2,4,60624,52,7,4,Haaland,Away Win
+FB2059,2023-06-22,La Liga,Manchester City,Atletico Madrid,1,5,30259,38,6,14,Benzema,Away Win
+FB2060,2025-10-30,Eredivisie,Juventus,Real Madrid,5,6,24009,35,20,6,Mbappe,Away Win
+FB2061,2023-12-20,Eredivisie,Juventus,PSG,5,1,64539,53,13,10,Player A,Home Win
+FB2062,2023-03-22,Premier League,Atletico Madrid,Liverpool,4,5,62390,37,8,14,Player C,Away Win
+FB2063,2024-05-22,Premier League,Bayern Munich,PSG,1,5,78054,53,4,1,Lewandowski,Away Win
+FB2064,2025-06-15,Ligue 1,Atletico Madrid,Real Madrid,2,2,44776,69,19,16,Player C,Draw
+FB2065,2025-06-18,Ligue 1,Juventus,Chelsea,1,6,22382,56,8,15,Lewandowski,Away Win
+FB2066,2025-12-09,Eredivisie,Barcelona,Manchester City,5,2,66823,53,9,6,Mbappe,Home Win
+FB2067,2025-12-06,Bundesliga,PSG,Arsenal,0,3,58860,41,8,5,Vinicius Jr,Away Win
+FB2068,2023-11-22,Serie A,Liverpool,Manchester City,2,3,30435,63,11,11,Lewandowski,Away Win
+FB2069,2025-01-15,Ligue 1,Atletico Madrid,Manchester City,2,5,38563,50,4,4,Vinicius Jr,Away Win
+FB2070,2025-02-02,Serie A,Barcelona,Juventus,5,4,75496,54,6,10,Benzema,Home Win
+FB2071,2024-08-02,Ligue 1,Liverpool,Chelsea,1,3,25039,64,14,14,Rashford,Away Win
+FB2072,2025-03-04,Bundesliga,PSG,Liverpool,6,1,59586,40,19,15,Rashford,Home Win
+FB2073,2025-04-17,Eredivisie,Arsenal,Real Madrid,4,0,19047,70,19,7,Rashford,Home Win
+FB2074,2024-11-23,La Liga,Barcelona,Bayern Munich,6,4,43956,42,9,16,Player B,Home Win
+FB2075,2023-04-18,Ligue 1,Juventus,Manchester City,3,1,48636,61,17,2,Rashford,Home Win
+FB2076,2024-11-16,Bundesliga,Chelsea,Manchester City,3,2,68507,35,9,3,Player A,Home Win
+FB2077,2023-05-15,Bundesliga,Arsenal,Real Madrid,4,0,76248,39,18,2,Lewandowski,Home Win
+FB2078,2024-11-06,Bundesliga,Barcelona,Liverpool,6,5,79116,61,14,13,Vinicius Jr,Home Win
+FB2079,2023-07-13,Bundesliga,Bayern Munich,Real Madrid,5,5,72314,69,7,12,Player B,Draw
+FB2080,2025-03-02,La Liga,PSG,Bayern Munich,4,1,62700,49,3,1,Lewandowski,Home Win
+FB2081,2024-08-04,Bundesliga,PSG,Bayern Munich,4,3,68959,49,10,15,Benzema,Home Win
+FB2082,2024-05-31,La Liga,Chelsea,Liverpool,5,6,22395,37,16,1,Haaland,Away Win
+FB2083,2023-11-04,La Liga,Real Madrid,Barcelona,4,0,44257,38,10,2,Mbappe,Home Win
+FB2084,2024-11-13,Bundesliga,Liverpool,Atletico Madrid,1,6,71605,38,7,17,Lewandowski,Away Win
+FB2085,2023-06-16,La Liga,Atletico Madrid,Arsenal,4,4,65629,55,10,10,Player C,Draw
+FB2086,2023-10-17,Eredivisie,PSG,Liverpool,3,2,33032,38,20,6,Mbappe,Home Win
+FB2087,2024-12-17,Ligue 1,Juventus,Manchester City,2,5,58997,59,19,11,Mbappe,Away Win
+FB2088,2024-09-27,Bundesliga,Barcelona,Arsenal,3,1,64441,69,18,8,Haaland,Home Win
+FB2089,2025-03-13,Serie A,Barcelona,PSG,0,4,42045,61,20,17,Player C,Away Win
+FB2090,2023-09-22,Bundesliga,Liverpool,Arsenal,1,2,57382,40,17,12,Player B,Away Win
+FB2091,2023-06-23,Ligue 1,Liverpool,Manchester City,2,3,59149,37,5,7,Rashford,Away Win
+FB2092,2024-09-26,La Liga,Juventus,Liverpool,6,2,34869,35,9,7,Player B,Home Win
+FB2093,2025-02-10,Eredivisie,Juventus,Liverpool,5,4,61122,48,15,8,Rashford,Home Win
+FB2094,2024-11-03,Serie A,Chelsea,Juventus,3,4,57514,57,12,9,Benzema,Away Win
+FB2095,2023-09-19,Ligue 1,Juventus,PSG,0,6,79311,65,13,7,Benzema,Away Win
+FB2096,2025-12-14,Serie A,Bayern Munich,Manchester City,4,6,29501,44,3,9,Rashford,Away Win
+FB2097,2023-07-11,Ligue 1,Atletico Madrid,Bayern Munich,2,1,27857,56,10,13,Haaland,Home Win
+FB2098,2025-05-17,Bundesliga,PSG,Arsenal,2,6,68843,66,18,15,Player C,Away Win
+FB2099,2025-11-07,Eredivisie,Arsenal,Barcelona,1,5,50818,66,8,18,Player A,Away Win

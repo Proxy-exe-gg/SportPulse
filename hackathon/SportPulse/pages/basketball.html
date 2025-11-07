@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportPulse - Basketball Dashboard</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        #particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        #particles-container canvas {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        body {
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+    </style>
+    <style>
+        :root {
+            --primary: #23235b;
+            --secondary: #4C6FFF;
+            --accent: #8A5CFF;
+            --bg: linear-gradient(135deg, #181A3D 0%, #23235b 100%);
+            --card-bg: rgba(30, 34, 70, 0.55);
+            --sidebar-bg: rgba(24, 26, 61, 0.85);
+            --text-main: #fff;
+            --text-muted: #a0a3c4;
+            --glass-blur: blur(18px);
+        }
+
+        html, body {
+            min-height: 100vh;
+            max-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        #particles {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100vh !important;
+            z-index: -1 !important;
+            pointer-events: none !important;
+            overflow: hidden !important;
+        }
+
+        #particles canvas {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100vh !important;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-bar {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: var(--glass-blur);
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(76,111,255,0.2);
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, rgba(76,111,255,0.1), rgba(138,92,255,0.1));
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(76,111,255,0.2);
+        }
+
+        .stat-pill {
+            background: rgba(255,255,255,0.1);
+            border-radius: 1rem;
+            padding: 0.25rem 0.75rem;
+                                #particles {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100vh;
+                        pointer-events: none;
+                        z-index: -1;
+                    }
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body class="p-8 min-h-screen" style="overflow-x: hidden;">
+    <div id="particles" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;"></div>
+    <div class="max-w-7xl mx-auto relative z-10">
+        <div class="flex justify-between items-center py-6">
+            <div class="relative">
+                <div class="logo">
+                    <div class="logo-glow"></div>
+                    <span class="text-2xl tracking-tight">Sport<span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">Pulse</span></span>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-10">
+                <a href="../index.html" class="nav-link hover:text-indigo-400 transition-colors">Home</a>
+                <a href="../dashboard.html" class="nav-link hover:text-indigo-400 transition-colors">Dashboard</a>
+                <a href="news.html" class="nav-link hover:text-indigo-400 transition-colors">News</a>
+                <div class="flex items-center space-x-4 ml-4">
+                    <button id="themeToggle" title="Toggle theme" class="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center gap-2 hover:bg-white/20 transition-all duration-300 text-sm group">
+                        <svg class="w-4 h-4 transition-transform group-hover:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                        <span class="opacity-80">Theme</span>
+                    </button>
+                    <button id="soundToggle" title="Toggle sound" class="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center gap-2 hover:bg-white/20 transition-all duration-300 text-sm group">
+                        <svg class="w-4 h-4 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M6.5 8.5l4-4v15l-4-4H4a1 1 0 01-1-1v-5a1 1 0 011-1h2.5z"/>
+                        </svg>
+                        <span class="opacity-80">Sound</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+        <div class="flex justify-between items-center mb-8">
+            <a href="../dashboard.html" class="back-button flex items-center gap-2 bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] p-2 rounded-lg text-white hover:shadow-lg transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Back to Dashboard
+            </a>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] bg-clip-text text-transparent">
+                Basketball Dashboard
+            </h1>
+        </div>
+
+        <div class="mb-8">
+            <input type="text" id="playerSearch" placeholder="Search for players, teams, or games..." 
+                   class="w-full p-4 rounded-xl search-bar text-white">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-2">Top Scorers</h3>
+                <div id="topScorers" class="space-y-2"></div>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-2">Recent Games</h3>
+                <div id="recentGames" class="space-y-2"></div>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-2">Upcoming Games</h3>
+                <div id="upcomingGames" class="space-y-2">
+                            <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                                <p class="font-medium">Boston Celtics vs Phoenix Suns</p>
+                                <p class="text-sm text-[var(--text-muted)]">Dec 9, 2025</p>
+                                <div class="mt-1">
+                                    <span class="stat-pill">Key Players: Giannis, Devin Booker</span>
+                                </div>
+                            </div>
+                            <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                                <p class="font-medium">Denver Nuggets vs Brooklyn Nets</p>
+                                <p class="text-sm text-[var(--text-muted)]">Dec 20, 2025</p>
+                                <div class="mt-1">
+                                    <span class="stat-pill">Key Players: Luka, Kevin Durant</span>
+                                </div>
+                            </div>
+                            <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                                <p class="font-medium">Warriors vs Lakers</p>
+                                <p class="text-sm text-[var(--text-muted)]">Dec 14, 2025</p>
+                                <div class="mt-1">
+                                    <span class="stat-pill">Key Players: Curry, Anthony Davis</span>
+                                </div>
+                            </div>
+                </div>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-2">Prediction</h3>
+                <div id="predictionPanel" class="space-y-2">
+                    <p class="text-sm text-[var(--text-muted)]">Simple predicted wins for teams based on current win rate.</p>
+                    <button id="computePredictions" class="mt-2 px-4 py-2 rounded bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] hover:translate-y-[-2px] transition-transform text-white">Show Predictions</button>
+                    <div id="predictionsResult" class="mt-3 text-sm"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Visualization -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-4">Team Performance</h3>
+                <canvas id="teamPerformanceChart"></canvas>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-4">Player Statistics</h3>
+                <canvas id="playerStatsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Player Performance Table -->
+        <div class="dashboard-card p-6">
+            <h3 class="text-lg font-medium mb-4">Player Performance</h3>
+            <div class="overflow-x-auto">
+                <table id="performanceTable" class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th class="p-2 text-left">Player</th>
+                            <th class="p-2 text-left">Team</th>
+                            <th class="p-2 text-left">Points</th>
+                            <th class="p-2 text-left">Assists</th>
+                            <th class="p-2 text-left">Rebounds</th>
+                            <th class="p-2 text-left">FG%</th>
+                        </tr>
+                    </thead>
+                    <tbody id="performanceTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto mt-6">
+      <div class="dashboard-card p-6">
+        <h4 class="text-sm text-[var(--text-muted)] mb-3">Raw data preview (first 10 rows)</h4>
+        <div class="overflow-x-auto">
+          <table id="dataPreview" class="w-full text-sm"></table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+        if (window.tsParticles) {
+            try { 
+                tsParticles.load("particles", { 
+                    fullScreen: {
+                        enable: false,
+                        zIndex: -1
+                    },
+                    fpsLimit: 30,
+                    particles: { 
+                        number: { value: 15, density: { enable: true, area: 800 } }, 
+                        color: { value: "#6366F1" }, 
+                        opacity: { value: 0.1 }, 
+                        size: { value: 2 }, 
+                        move: { 
+                            enable: true, 
+                            speed: 0.2,
+                            direction: "none",
+                            random: false,
+                            straight: false,
+                            outModes: { default: "out" },
+                            bounce: false,
+                            collisions: false
+                        }
+                    },
+                    detectRetina: true,
+                    interactivity: {
+                        events: {
+                            onHover: { enable: false },
+                            onClick: { enable: false }
+                        }
+                    },
+                    background: {
+                        opacity: 0
+                    }
+                }); 
+            } catch(e) { 
+                                    console.warn(e);  
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('button, .back-button, .nav-link').forEach(el => {
+                el.addEventListener('mouseover', () => el.style.transform = 'translateY(-3px)');
+                el.addEventListener('mouseout', () => el.style.transform = '');
+            });
+        });
+
+        
+        async function loadBasketballData() {
+            try {
+                const response = await fetch('../../basketball_data_100 (1).csv');
+                const data = await response.text();
+                const rows = data.split('\n').slice(1).filter(r => r.trim().length > 0); // Skip header & empty lines
+                const games = rows.map(row => {
+                    const cols = row.split(',');
+                    return {
+                        game_id: cols[0] || '',
+                        date: cols[1] ? new Date(cols[1]) : new Date(NaN),
+                        team: cols[2] || '',
+                        opponent: cols[3] || '',
+                        player: cols[4] || '',
+                        points: parseInt(cols[5]) || 0,
+                        assists: parseInt(cols[6]) || 0,
+                        rebounds: parseInt(cols[7]) || 0,
+                        fg_pct: parseFloat(cols[8]) || 0,
+                        minutes: parseInt(cols[9]) || 0,
+                        result: cols[12] || ''
+                    };
+                });
+
+                if (games.length > 0 && !isNaN(games[0].date)) {
+                    updateDashboard(games);
+                    attachPredictionHandler(games);
+                } else {
+                    console.error('Error processing basketball data');
+                    showError('Failed to load basketball data. Please try again later.');
+                }
+            } catch (error) {
+                console.error('Error loading basketball data:', error);
+                showError('Failed to fetch basketball data. Please try again later.');
+            }
+        }
+
+        function showError(message) {
+            const container = document.createElement('div');
+            container.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+            container.textContent = message;
+            document.body.appendChild(container);
+            setTimeout(() => container.remove(), 5000);
+        }
+
+        function attachPredictionHandler(games) {
+            const btn = document.getElementById('computePredictions');
+            if (!btn) return;
+            btn.onclick = () => {
+                const preds = computePredictions(games);
+                const el = document.getElementById('predictionsResult');
+                el.innerHTML = Object.entries(preds)
+                    .sort((a, b) => b[1] - a[1])
+                    .map(([team, wins]) => {
+                        const pct = Math.min(100, Math.round((wins / 10) * 100));
+                        return `
+                            <div class="p-2 rounded bg-opacity-10 bg-white/5 flex justify-between items-center">
+                                <span>${team}</span>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-24 h-2 bg-gray-700 rounded-full overflow-hidden">
+                                        <div class="h-full bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)]" style="width: ${pct}%"></div>
+                                    </div>
+                                    <strong>${wins}</strong>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+            };
+        }
+
+        function computePredictions(games) {
+            const stats = {};
+            games.forEach(g => {
+                stats[g.team] = stats[g.team] || { played: 0, wins: 0 };
+                stats[g.opponent] = stats[g.opponent] || { played: 0, wins: 0 };
+                stats[g.team].played++;
+                stats[g.opponent].played++;
+                if (g.result === g.team) stats[g.team].wins++;
+                else if (g.result === g.opponent) stats[g.opponent].wins++;
+            });
+            const remaining = 10;
+            const preds = {};
+            Object.entries(stats).forEach(([team, s]) => { preds[team] = Math.round((s.wins / Math.max(1, s.played)) * remaining); });
+            return preds;
+        }
+
+        function updateDashboard(games) {
+            // Update top scorers
+            const topScorers = document.getElementById('topScorers');
+            const scorers = getTopScorers(games);
+            topScorers.innerHTML = scorers.map((s, idx) => `
+                <div class="p-2 rounded bg-opacity-20 bg-gradient-to-r ${getGradientClass(idx)}">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="font-medium">${s.player}</p>
+                            <p class="text-sm text-[var(--text-muted)]">${s.team}</p>
+                        </div>
+                        <div class="text-2xl font-bold bg-clip-text text-transparent ${getGradientClass(idx)}">${Math.round(s.ppg)}</div>
+                    </div>
+                    <div class="flex gap-2 mt-2">
+                        <span class="stat-pill">${s.points} total pts</span>
+                        <span class="stat-pill">${s.fg_pct.toFixed(1)}% FG</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update recent games
+            const recentGames = document.getElementById('recentGames');
+            const recent = getRecentGames(games);
+            recentGames.innerHTML = recent.map(g => `
+                <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-medium">${g.team} vs ${g.opponent}</span>
+                        <span class="text-xs px-2 py-1 rounded ${g.result === g.team ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}">
+                            ${g.result === g.team ? 'WIN' : 'LOSS'}
+                        </span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-[var(--text-muted)]">${g.date.toLocaleDateString()}</div>
+                        <div class="flex gap-2">
+                            <span class="stat-pill">🏀 ${g.player}</span>
+                            <span class="stat-pill">${g.points} pts</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update performance table
+            updatePerformanceTable(games);
+
+            // Create charts
+            createTeamPerformanceChart(games);
+            createPlayerStatsChart(games);
+            showDataPreview(games);
+        }
+
+        function getGradientClass(index) {
+            const gradients = [
+                'from-amber-500 to-red-500',
+                'from-slate-500 to-gray-700',
+                'from-amber-700 to-yellow-600'
+            ];
+            return gradients[index] || 'from-indigo-500 to-purple-500';
+        }
+
+        function showDataPreview(games) {
+            const table = document.getElementById('dataPreview');
+            if (!table) return;
+            const rows = games.slice(0, 10);
+            table.innerHTML = `
+                <thead>
+                    <tr class="text-left text-xs text-[var(--text-muted)]">
+                        <th class="p-2">Date</th>
+                        <th class="p-2">Team</th>
+                        <th class="p-2">Opponent</th>
+                        <th class="p-2">Player</th>
+                        <th class="p-2">Stats</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rows.map(r => `
+                        <tr class="border-b border-gray-700">
+                            <td class="p-2">${new Date(r.date).toLocaleDateString()}</td>
+                            <td class="p-2">${r.team}</td>
+                            <td class="p-2">${r.opponent}</td>
+                            <td class="p-2">${r.player}</td>
+                            <td class="p-2">
+                                <div class="flex gap-2">
+                                    <span class="stat-pill">${r.points}p</span>
+                                    <span class="stat-pill">${r.assists}a</span>
+                                    <span class="stat-pill">${r.rebounds}r</span>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+        }
+
+        function getTopScorers(games) {
+            const playerStats = {};
+            games.forEach(game => {
+                if (!playerStats[game.player]) {
+                    playerStats[game.player] = {
+                        points: 0,
+                        games: 0,
+                        fg_pct: 0,
+                        team: game.team
+                    };
+                }
+                playerStats[game.player].points += game.points;
+                playerStats[game.player].games++;
+                playerStats[game.player].fg_pct += game.fg_pct;
+            });
+
+            return Object.entries(playerStats)
+                .map(([player, stats]) => ({
+                    player,
+                    team: stats.team,
+                    points: stats.points,
+                    fg_pct: stats.fg_pct / stats.games,
+                    ppg: stats.points / stats.games
+                }))
+                .sort((a, b) => b.points - a.points)
+                .slice(0, 3);
+        }
+
+        function getRecentGames(games) {
+            return games
+                .slice()
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 3);
+        }
+
+        function updatePerformanceTable(games) {
+            const tbody = document.getElementById('performanceTableBody');
+            const playerStats = {};
+
+            games.forEach(game => {
+                if (!playerStats[game.player]) {
+                    playerStats[game.player] = {
+                        team: game.team,
+                        points: [],
+                        assists: [],
+                        rebounds: [],
+                        fg_pct: []
+                    };
+                }
+                playerStats[game.player].points.push(game.points);
+                playerStats[game.player].assists.push(game.assists);
+                playerStats[game.player].rebounds.push(game.rebounds);
+                playerStats[game.player].fg_pct.push(game.fg_pct);
+            });
+
+            const averagedStats = Object.entries(playerStats).map(([player, stats]) => ({
+                player,
+                team: stats.team,
+                points: average(stats.points),
+                assists: average(stats.assists),
+                rebounds: average(stats.rebounds),
+                fg_pct: average(stats.fg_pct)
+            })).sort((a, b) => b.points - a.points);
+
+            tbody.innerHTML = averagedStats.map(stat => `
+                <tr class="border-b border-gray-700">
+                    <td class="p-2">${stat.player}</td>
+                    <td class="p-2">${stat.team}</td>
+                    <td class="p-2">${stat.points.toFixed(1)}</td>
+                    <td class="p-2">${stat.assists.toFixed(1)}</td>
+                    <td class="p-2">${stat.rebounds.toFixed(1)}</td>
+                    <td class="p-2">${stat.fg_pct.toFixed(1)}%</td>
+                </tr>
+            `).join('');
+        }
+
+        function average(arr) {
+            if (!arr || arr.length === 0) return 0;
+            return arr.reduce((a, b) => a + b, 0) / arr.length;
+        }
+
+        function createTeamPerformanceChart(games) {
+            const teamStats = {};
+            games.forEach(game => {
+                [game.team, game.opponent].forEach(team => {
+                    if (!teamStats[team]) {
+                        teamStats[team] = { wins: 0, losses: 0 };
+                    }
+                });
+
+                if (game.result === game.team) {
+                    teamStats[game.team].wins++;
+                    teamStats[game.opponent].losses++;
+                } else if (game.result === game.opponent) {
+                    teamStats[game.opponent].wins++;
+                    teamStats[game.team].losses++;
+                }
+            });
+
+            const ctx = document.getElementById('teamPerformanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(teamStats),
+                    datasets: [{
+                        label: 'Wins',
+                        data: Object.values(teamStats).map(s => s.wins),
+                        backgroundColor: 'rgba(76,111,255,0.7)',
+                        borderColor: 'rgba(76,111,255,1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Losses',
+                        data: Object.values(teamStats).map(s => s.losses),
+                        backgroundColor: 'rgba(255,76,76,0.7)',
+                        borderColor: 'rgba(255,76,76,1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { position: 'top', labels: { usePointStyle: true, pointStyle: 'circle' } },
+                        tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', titleColor: '#fff', bodyColor: '#fff' }
+                    }
+                }
+            });
+        }
+
+        function createPlayerStatsChart(games) {
+            const playerStats = {};
+            games.forEach(game => {
+                if (!playerStats[game.player]) {
+                    playerStats[game.player] = { points: 0, assists: 0, rebounds: 0, games: 0 };
+                }
+                playerStats[game.player].points += game.points;
+                playerStats[game.player].assists += game.assists;
+                playerStats[game.player].rebounds += game.rebounds;
+                playerStats[game.player].games++;
+            });
+
+            const topPlayers = Object.entries(playerStats)
+                .map(([player, stats]) => ({ player, ppg: stats.points / stats.games, apg: stats.assists / stats.games, rpg: stats.rebounds / stats.games }))
+                .sort((a, b) => b.ppg - a.ppg)
+                .slice(0, 5);
+
+            const ctx = document.getElementById('playerStatsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: topPlayers.map(p => p.player),
+                    datasets: [{
+                        label: 'Points per Game', data: topPlayers.map(p => p.ppg), backgroundColor: 'rgba(76,111,255,0.3)', borderColor: 'rgba(76,111,255,1)', borderWidth: 2, pointBackgroundColor: 'rgba(76,111,255,1)', pointRadius: 4
+                    }, {
+                        label: 'Assists per Game', data: topPlayers.map(p => p.apg), backgroundColor: 'rgba(255,76,76,0.3)', borderColor: 'rgba(255,76,76,1)', borderWidth: 2, pointBackgroundColor: 'rgba(255,76,76,1)', pointRadius: 4
+                    }, {
+                        label: 'Rebounds per Game', data: topPlayers.map(p => p.rpg), backgroundColor: 'rgba(76,255,76,0.3)', borderColor: 'rgba(76,255,76,1)', borderWidth: 2, pointBackgroundColor: 'rgba(76,255,76,1)', pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { r: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: 'rgba(255,255,255,0.6)' }, pointLabels: { color: 'rgba(255,255,255,0.8)', font: { size: 12 } } } },
+                    plugins: { legend: { position: 'top', labels: { usePointStyle: true, pointStyle: 'circle', padding: 20 } } }
+                }
+            });
+        }
+
+        // Initialize search functionality
+        const searchInput = document.getElementById('playerSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const tbody = document.getElementById('performanceTableBody');
+                if (!tbody) return;
+                Array.from(tbody.getElementsByTagName('tr')).forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.style.display = text.includes(searchTerm) ? '' : 'none';
+                });
+            });
+        }
+
+        // Load data when page loads
+        loadBasketballData();
+    </script>
+</body>
+</html>

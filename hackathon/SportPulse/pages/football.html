@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportPulse - Football Dashboard</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #23235b;
+            --secondary: #4C6FFF;
+            --accent: #8A5CFF;
+            --bg: linear-gradient(135deg, #181A3D 0%, #23235b 100%);
+            --card-bg: rgba(30, 34, 70, 0.55);
+            --sidebar-bg: rgba(24, 26, 61, 0.85);
+            --text-main: #fff;
+            --text-muted: #a0a3c4;
+            --glass-blur: blur(18px);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 1.25rem;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            border-color: var(--secondary);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-bar {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: var(--glass-blur);
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(76,111,255,0.2);
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, rgba(76,111,255,0.1), rgba(138,92,255,0.1));
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(76,111,255,0.2);
+        }
+
+        .league-filter {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: var(--glass-blur);
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        .league-filter.active {
+            background: var(--secondary);
+            border-color: var(--accent);
+        }
+    </style>
+</head>
+<body class="p-8">
+    <div id="particles"></div>
+    <div class="max-w-7xl mx-auto">
+        <!-- Navbar (copied from index for consistent layout) -->
+        <div class="flex justify-between items-center py-6">
+            <div class="relative">
+                <div class="logo">
+                    <div class="logo-glow"></div>
+                    <span class="text-2xl tracking-tight">Sport<span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-purple-500">Pulse</span></span>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center space-x-10">
+                <a href="../index.html" class="nav-link hover:text-indigo-400 transition-colors">Home</a>
+                <a href="../dashboard.html" class="nav-link hover:text-indigo-400 transition-colors">Dashboard</a>
+                <a href="news.html" class="nav-link hover:text-indigo-400 transition-colors">News</a>
+                <div class="flex items-center space-x-4 ml-4">
+                    <button id="themeToggle" title="Toggle theme" class="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center gap-2 hover:bg-white/20 transition-all duration-300 text-sm group">
+                        <svg class="w-4 h-4 transition-transform group-hover:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                        <span class="opacity-80">Theme</span>
+                    </button>
+                    <button id="soundToggle" title="Toggle sound" class="px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center gap-2 hover:bg-white/20 transition-all duration-300 text-sm group">
+                        <svg class="w-4 h-4 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.536 8.464a5 5 0 010 7.072M17.95 6.05a8 8 0 010 11.9M6.5 8.5l4-4v15l-4-4H4a1 1 0 01-1-1v-5a1 1 0 011-1h2.5z"/>
+                        </svg>
+                        <span class="opacity-80">Sound</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+        <!-- Navigation -->
+        <div class="flex justify-between items-center mb-8">
+            <a href="../dashboard.html" class="back-button flex items-center gap-2 bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] p-2 rounded-lg text-white hover:shadow-lg transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Back to Dashboard
+            </a>
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] bg-clip-text text-transparent">
+                Football Dashboard
+            </h1>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="flex flex-col md:flex-row gap-4 mb-8">
+            <input type="text" id="teamSearch" placeholder="Search for teams or players..." 
+                   class="flex-1 p-4 rounded-xl search-bar text-white">
+            <div class="flex gap-2 flex-wrap">
+                <button class="league-filter active" data-league="all">All Leagues</button>
+                <button class="league-filter" data-league="Premier League">Premier League</button>
+                <button class="league-filter" data-league="La Liga">La Liga</button>
+                <button class="league-filter" data-league="Serie A">Serie A</button>
+                <button class="league-filter" data-league="Bundesliga">Bundesliga</button>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-2">Top Scorers</h3>
+                <div id="topScorers" class="space-y-2"></div>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-2">Recent Results</h3>
+                <div id="recentResults" class="space-y-2"></div>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-2">Upcoming Matches</h3>
+                <div id="upcomingMatches" class="space-y-2">
+                    <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                        <p class="font-medium">Manchester City vs Arsenal</p>
+                        <p class="text-sm text-[var(--text-muted)]">Nov 15, 2025</p>
+                    </div>
+                    <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                        <p class="font-medium">Real Madrid vs Barcelona</p>
+                        <p class="text-sm text-[var(--text-muted)]">Nov 20, 2025</p>
+                    </div>
+                    <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                        <p class="font-medium">Bayern Munich vs PSG</p>
+                        <p class="text-sm text-[var(--text-muted)]">Nov 25, 2025</p>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-2">Prediction</h3>
+                <div id="predictionPanel" class="space-y-2">
+                    <p class="text-sm text-[var(--text-muted)]">Simple predicted wins for teams based on current win rate.</p>
+                    <button id="computePredictions" class="mt-2 px-4 py-2 rounded bg-gradient-to-r from-[var(--secondary)] to-[var(--accent)] hover:translate-y-[-2px] transition-transform text-white">Show Predictions</button>
+                    <div id="predictionsResult" class="mt-3 text-sm"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Visualization -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-4">Team Performance</h3>
+                <canvas id="teamPerformanceChart"></canvas>
+            </div>
+            <div class="dashboard-card p-6">
+                <h3 class="text-lg font-medium mb-4">Goals Distribution</h3>
+                <canvas id="goalsDistributionChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Match History -->
+        <div class="dashboard-card p-6">
+            <h3 class="text-lg font-medium mb-4">Recent Matches</h3>
+            <h4 class="text-sm text-[var(--text-muted)] mb-3">Raw data preview (first 10 rows)</h4>
+            <div class="overflow-x-auto mb-4">
+                <table id="dataPreview" class="w-full text-sm"></table>
+            </div>
+            <div class="overflow-x-auto">
+                <table id="matchHistoryTable" class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-700">
+                            <th class="p-2 text-left">Date</th>
+                            <th class="p-2 text-left">League</th>
+                            <th class="p-2 text-left">Teams</th>
+                            <th class="p-2 text-left">Score</th>
+                            <th class="p-2 text-left">Top Scorer</th>
+                        </tr>
+                    </thead>
+                    <tbody id="matchHistoryBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize particles like landing page
+        if (window.tsParticles) {
+            try { tsParticles.load("particles", { particles: { number: { value: 40 }, color: { value: "#6366F1" }, opacity: { value: 0.18 }, size: { value: 3 }, move: { enable: true, speed: 1 } } }); } catch(e) { console.warn('tsParticles init failed', e); }
+        }
+
+        // Add hover effect
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('button, .back-button, .nav-link, .league-filter').forEach(el => {
+                el.addEventListener('mouseover', () => el.style.transform = 'translateY(-3px)');
+                el.addEventListener('mouseout', () => el.style.transform = '');
+            });
+        });
+        // Load and process football data
+        async function loadFootballData() {
+            try {
+                const response = await fetch('../../football_data_100 (1).csv');
+                const data = await response.text();
+                const rows = data.split('\\n').slice(1); // Skip header
+                const matches = rows.map(row => {
+                    const cols = row.split(',');
+                    return {
+                        match_id: cols[0],
+                        date: new Date(cols[1]),
+                        league: cols[2],
+                        home_team: cols[3],
+                        away_team: cols[4],
+                        home_goals: parseInt(cols[5]),
+                        away_goals: parseInt(cols[6]),
+                        attendance: parseInt(cols[7]),
+                        top_scorer: cols[10]
+                    };
+                });
+
+                if (!matches || matches.length === 0 || isNaN(matches[0].date)) {
+                    const sample = [
+                        { match_id: 's1', date: new Date('2025-11-01'), league: 'Premier League', home_team: 'Man City', away_team: 'Arsenal', home_goals: 2, away_goals: 1, top_scorer: 'Erling Haaland' },
+                        { match_id: 's2', date: new Date('2025-10-28'), league: 'La Liga', home_team: 'Real Madrid', away_team: 'Barcelona', home_goals: 1, away_goals: 3, top_scorer: 'Robert Lewandowski' },
+                        { match_id: 's3', date: new Date('2025-10-20'), league: 'Bundesliga', home_team: 'Bayern Munich', away_team: 'Dortmund', home_goals: 2, away_goals: 2, top_scorer: 'Harry Kane' },
+                        { match_id: 's4', date: new Date('2025-10-15'), league: 'Premier League', home_team: 'Liverpool', away_team: 'Man United', home_goals: 3, away_goals: 1, top_scorer: 'Mohamed Salah' },
+                        { match_id: 's5', date: new Date('2025-10-10'), league: 'Serie A', home_team: 'Inter Milan', away_team: 'AC Milan', home_goals: 2, away_goals: 2, top_scorer: 'Lautaro Martinez' },
+                        { match_id: 's6', date: new Date('2025-10-05'), league: 'La Liga', home_team: 'Atletico Madrid', away_team: 'Sevilla', home_goals: 2, away_goals: 0, top_scorer: 'Antoine Griezmann' },
+                        { match_id: 's7', date: new Date('2025-10-01'), league: 'Premier League', home_team: 'Chelsea', away_team: 'Tottenham', home_goals: 1, away_goals: 1, top_scorer: 'Son Heung-min' },
+                        { match_id: 's8', date: new Date('2025-09-28'), league: 'Bundesliga', home_team: 'RB Leipzig', away_team: 'Leverkusen', home_goals: 2, away_goals: 3, top_scorer: 'Victor Boniface' },
+                        { match_id: 's9', date: new Date('2025-09-25'), league: 'Serie A', home_team: 'Juventus', away_team: 'Napoli', home_goals: 1, away_goals: 0, top_scorer: 'Federico Chiesa' },
+                        { match_id: 's10', date: new Date('2025-09-20'), league: 'Premier League', home_team: 'Man City', away_team: 'Liverpool', home_goals: 2, away_goals: 2, top_scorer: 'Mohamed Salah' }
+                    ];
+                    updateDashboard(sample);
+                    attachPredictionHandler(sample);
+                } else {
+                    updateDashboard(matches);
+                    attachPredictionHandler(matches);
+                }
+            } catch (error) {
+                console.error('Error loading football data:', error);
+                const sample = [
+                    { match_id: 's1', date: new Date('2025-11-01'), league: 'Premier League', home_team: 'Man City', away_team: 'Arsenal', home_goals: 2, away_goals: 1, top_scorer: 'Player X' },
+                    { match_id: 's2', date: new Date('2025-10-28'), league: 'La Liga', home_team: 'Real Madrid', away_team: 'Barcelona', home_goals: 1, away_goals: 3, top_scorer: 'Player Y' },
+                    { match_id: 's3', date: new Date('2025-10-20'), league: 'Bundesliga', home_team: 'Bayern', away_team: 'PSG', home_goals: 2, away_goals: 2, top_scorer: 'Player Z' }
+                ];
+                updateDashboard(sample);
+                attachPredictionHandler(sample);
+            }
+        }
+
+        function attachPredictionHandler(matches) {
+            const btn = document.getElementById('computePredictions');
+            if (!btn) return;
+            btn.onclick = () => {
+                const preds = computePredictions(matches);
+                const el = document.getElementById('predictionsResult');
+                el.innerHTML = Object.entries(preds).map(([team, wins]) => `<div class="p-2 rounded bg-opacity-10 bg-white/5">${team}: <strong>${wins} predicted wins</strong></div>`).join('');
+            };
+        }
+
+        function computePredictions(matches) {
+            const stats = {};
+            matches.forEach(m => {
+                stats[m.home_team] = stats[m.home_team] || { played: 0, wins: 0 };
+                stats[m.away_team] = stats[m.away_team] || { played: 0, wins: 0 };
+                stats[m.home_team].played++;
+                stats[m.away_team].played++;
+                if (m.home_goals > m.away_goals) stats[m.home_team].wins++;
+                else if (m.away_goals > m.home_goals) stats[m.away_team].wins++;
+            });
+            const remaining = 10;
+            const preds = {};
+            Object.entries(stats).forEach(([team, s]) => {
+                const rate = s.played ? (s.wins / s.played) : 0.5;
+                preds[team] = Math.round(rate * remaining);
+            });
+            return preds;
+        }
+
+        function updateDashboard(matches) {
+            // Update top scorers
+            const topScorers = document.getElementById('topScorers');
+            const scorers = getTopScorers(matches);
+            topScorers.innerHTML = scorers.map(s => `
+                <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                    <p class="font-medium">${s.name}</p>
+                    <p class="text-sm text-[var--text-muted]">${s.goals} goals</p>
+                </div>
+            `).join('');
+
+            // Update recent results
+            const recentResults = document.getElementById('recentResults');
+            const results = getRecentResults(matches);
+            recentResults.innerHTML = results.map(r => `
+                <div class="p-2 rounded bg-opacity-20 bg-blue-500">
+                    <p class="font-medium">${r.home_team} ${r.home_goals} - ${r.away_goals} ${r.away_team}</p>
+                    <p class="text-sm text-[var--text-muted]">${r.league}</p>
+                </div>
+            `).join('');
+
+            // Update match history table
+            updateMatchHistory(matches);
+
+            // Create charts
+            createTeamPerformanceChart(matches);
+            createGoalsDistributionChart(matches);
+            showDataPreview(matches);
+        }
+
+        function showDataPreview(matches) {
+            const table = document.getElementById('dataPreview');
+            if (!table) return;
+            const rows = matches.slice(0, 10);
+            table.innerHTML = `
+                <thead>
+                    <tr class="text-left text-xs text-[var(--text-muted)]">
+                        <th class="p-2">Date</th>
+                        <th class="p-2">League</th>
+                        <th class="p-2">Teams</th>
+                        <th class="p-2">Score</th>
+                        <th class="p-2">Top Scorer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rows.map(r => `
+                        <tr class="border-b border-gray-700">
+                            <td class="p-2">${r.date.toLocaleDateString()}</td>
+                            <td class="p-2">${r.league}</td>
+                            <td class="p-2">${r.home_team} vs ${r.away_team}</td>
+                            <td class="p-2">${r.home_goals} - ${r.away_goals}</td>
+                            <td class="p-2">${r.top_scorer}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+        }
+
+        function getTopScorers(matches) {
+            const scorers = {};
+            matches.forEach(match => {
+                if (!scorers[match.top_scorer]) {
+                    scorers[match.top_scorer] = { goals: 0, matches: 0 };
+                }
+                scorers[match.top_scorer].goals++;
+                scorers[match.top_scorer].matches++;
+            });
+
+            return Object.entries(scorers)
+                .map(([name, stats]) => ({
+                    name,
+                    goals: stats.goals,
+                    average: stats.goals / stats.matches
+                }))
+                .sort((a, b) => b.goals - a.goals)
+                .slice(0, 3);
+        }
+
+        function getRecentResults(matches) {
+            return matches
+                .sort((a, b) => b.date - a.date)
+                .slice(0, 3);
+        }
+
+        function updateMatchHistory(matches) {
+            const tbody = document.getElementById('matchHistoryBody');
+            const recentMatches = matches
+                .sort((a, b) => b.date - a.date)
+                .slice(0, 10);
+
+            tbody.innerHTML = recentMatches.map(match => `
+                <tr class="border-b border-gray-700">
+                    <td class="p-2">${match.date.toLocaleDateString()}</td>
+                    <td class="p-2">${match.league}</td>
+                    <td class="p-2">${match.home_team} vs ${match.away_team}</td>
+                    <td class="p-2">${match.home_goals} - ${match.away_goals}</td>
+                    <td class="p-2">${match.top_scorer}</td>
+                </tr>
+            `).join('');
+        }
+
+        function createTeamPerformanceChart(matches) {
+            const teamStats = {};
+            matches.forEach(match => {
+                [match.home_team, match.away_team].forEach(team => {
+                    if (!teamStats[team]) {
+                        teamStats[team] = { wins: 0, losses: 0, draws: 0 };
+                    }
+                });
+
+                if (match.home_goals > match.away_goals) {
+                    teamStats[match.home_team].wins++;
+                    teamStats[match.away_team].losses++;
+                } else if (match.home_goals < match.away_goals) {
+                    teamStats[match.away_team].wins++;
+                    teamStats[match.home_team].losses++;
+                } else {
+                    teamStats[match.home_team].draws++;
+                    teamStats[match.away_team].draws++;
+                }
+            });
+
+            const ctx = document.getElementById('teamPerformanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(teamStats),
+                    datasets: [{
+                        label: 'Wins',
+                        data: Object.values(teamStats).map(s => s.wins),
+                        backgroundColor: 'rgba(76,111,255,0.5)'
+                    }, {
+                        label: 'Losses',
+                        data: Object.values(teamStats).map(s => s.losses),
+                        backgroundColor: 'rgba(255,76,76,0.5)'
+                    }, {
+                        label: 'Draws',
+                        data: Object.values(teamStats).map(s => s.draws),
+                        backgroundColor: 'rgba(76,255,76,0.5)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    },
+                    plugins: {
+                        legend: { position: 'top' }
+                    }
+                }
+            });
+        }
+
+        function createGoalsDistributionChart(matches) {
+            const leagueGoals = {};
+            matches.forEach(match => {
+                if (!leagueGoals[match.league]) {
+                    leagueGoals[match.league] = 0;
+                }
+                leagueGoals[match.league] += match.home_goals + match.away_goals;
+            });
+
+            const ctx = document.getElementById('goalsDistributionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(leagueGoals),
+                    datasets: [{
+                        data: Object.values(leagueGoals),
+                        backgroundColor: [
+                            'rgba(76,111,255,0.5)',
+                            'rgba(255,76,76,0.5)',
+                            'rgba(76,255,76,0.5)',
+                            'rgba(255,206,86,0.5)',
+                            'rgba(153,102,255,0.5)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'right' }
+                    }
+                }
+            });
+        }
+
+        // Initialize league filters
+        document.querySelectorAll('.league-filter').forEach(button => {
+            button.addEventListener('click', (e) => {
+                document.querySelectorAll('.league-filter').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                // Implement filter logic here
+            });
+        });
+
+        // Initialize search functionality
+        document.getElementById('teamSearch').addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            // Implement search logic here
+        });
+
+        // Load data when page loads
+        loadFootballData();
+    </script>
+</body>
+</html>
